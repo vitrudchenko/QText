@@ -2,6 +2,7 @@
 
 #include <QTabWidget>
 #include <QWidget>
+#include "storage/fileitem.h"
 
 class QTabWidgetEx : public QTabWidget {
         Q_OBJECT
@@ -9,6 +10,8 @@ class QTabWidgetEx : public QTabWidget {
     public:
         QTabWidgetEx(QWidget* parent = nullptr);
         int addTab(QWidget* widget, const QString& text);
+
+        void stylizeTab(FileItem* item, int index);
 
     private slots:
         void onTabMoved(int from, int to);

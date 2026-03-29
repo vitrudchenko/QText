@@ -284,7 +284,7 @@ class Config {
         };
 
     private:
-        static QMutex _publicAccessMutex; //to ensure multi-threaded access works without conflict
+        static QRecursiveMutex  _publicAccessMutex; //to ensure multi-threaded access works without conflict
         static QString _configurationFilePath;
         static QString _stateFilePath;
         static QString _dataDirectoryPath;
@@ -393,10 +393,10 @@ class Config {
         static ConfigFile* getConfigFile();
         static void resetConfigFile();
         static ConfigFile* _configFile;
-        static QMutex _configFileMutex;
+        static QRecursiveMutex  _configFileMutex;
         static ConfigFile* getStateFile();
         static void resetStateFile();
         static ConfigFile* _stateFile;
-        static QMutex _stateFileMutex;
+        static QRecursiveMutex  _stateFileMutex;
 
 };

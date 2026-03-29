@@ -147,45 +147,42 @@ void Storage::sortFolders() {
 
 
 void Storage::onDirectoryAdded(QString folderPath) {
-    for (FolderItem* folder : _folders) { //find duplicates
-        if (folder->path() == folderPath) { return; } //already there
+    for (FolderItem* folder : _folders) {
+        if (folder->path() == folderPath) { return; }
     }
-
     FolderItem* rootFolder = nullptr;
-    QFileInfo folderInfo = folderPath;
+    QFileInfo folderInfo(folderPath);  // Explicit!
     auto rootPath = folderInfo.dir().path();
-    for (FolderItem* folder : _folders) { //find root folder
+    for (FolderItem* folder : _folders) {
         if (!folder->isRoot()) { continue; }
         if (folder->path() == rootPath) {
             rootFolder = folder;
             break;
         }
     }
-
-    if (rootFolder != nullptr) { //create new item
+    if (rootFolder != nullptr) {
         qDebug().noquote().nospace() << "[StorageMonitorThread] onDirectoryAdded(\"" << rootFolder->path() << "\", \"" << folderInfo.fileName() << "\") #" << QThread::currentThreadId();
         auto folder = new FolderItem(this, rootFolder, rootFolder->pathIndex(), rootFolder->path(), folderInfo.fileName());
         _folders.append(folder);
         sortFolders();
-
         emit updatedFolder(nullptr);
     }
 }
 
 void Storage::onDirectoryRemoved(QString folderPath) {
-    for (int i = 0; i < _folders.count(); i++) { //find item
+    for (int i = 0; i < _folders.count(); i++) {
         FolderItem* iFolder = _folders[i];
         QString iFolderPath = iFolder->path();
-        if (iFolderPath == folderPath) { //remove item
+        if (iFolderPath == folderPath) {
             removeItemAt(i);
-
-            QFileInfo iFolderInfo = iFolderPath;
+            QFileInfo iFolderInfo(iFolderPath);  // Explicit!
             qDebug().noquote().nospace() << "[StorageMonitorThread] onDirectoryRemoved(\"" << iFolderInfo.dir().path() << "\", \"" << iFolderInfo.fileName() << "\") #" << QThread::currentThreadId();
             emit updatedFolder(nullptr);
             break;
         }
     }
 }
+
 
 void Storage::onFileAdded(QString folderPath, QString fileName) {
     FolderItem* folder = nullptr;

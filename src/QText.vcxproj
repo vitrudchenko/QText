@@ -1,0 +1,485 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{35CA3D7F-D92C-373D-9F54-04DB6C0A6813}</ProjectGuid>
+    <RootNamespace>qtext</RootNamespace>
+    <Keyword>QtVS_v304</Keyword>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.26100.0</WindowsTargetPlatformMinVersion>
+    <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <PlatformToolset>v143</PlatformToolset>
+    <OutputDirectory>release\bin\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>Application</ConfigurationType>
+    <IntermediateDirectory>release\obj\</IntermediateDirectory>
+    <PrimaryOutput>qtext</PrimaryOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <PlatformToolset>v143</PlatformToolset>
+    <OutputDirectory>debug\bin\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>Application</ConfigurationType>
+    <IntermediateDirectory>debug\obj\</IntermediateDirectory>
+    <PrimaryOutput>qtext</PrimaryOutput>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="$(QtMsBuild)\qt_defaults.props" Condition="Exists('$(QtMsBuild)\qt_defaults.props')" />
+  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <QtInstall>Qt 6.10.2 MSVC2022_64</QtInstall>
+    <QtModules>core;gui;network;widgets;core5compat;printsupport</QtModules>
+  </PropertyGroup>
+  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <QtInstall>Qt 6.10.2 MSVC2022_64</QtInstall>
+    <QtModules>core;gui;network;widgets;core5compat;printsupport</QtModules>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') OR !Exists('$(QtMsBuild)\Qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">qtext</TargetName>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</IgnoreImportLibrary>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">qtext</TargetName>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IgnoreImportLibrary>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;.;$(ProjectDir)release;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -permissive- -Zc:__cplusplus -Zc:externConstexpr %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>release\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ObjectFileName>release\obj\</ObjectFileName>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;APP_PRODUCT="QText";APP_COMPANY="Josip Medved";APP_VERSION="0.0.0";APP_COPYRIGHT="Copyright 2004 Josip Medved";APP_DESCRIPTION="QText: Note taking utility with auto-save";APP_QT_VERSION="6.10.2";APP_COMMIT="8410513";QT_DEPRECATED_WARNINGS;QT_NO_DEBUG_OUTPUT;NDEBUG;QT_NO_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <ProgramDataBaseFileName>
+      </ProgramDataBaseFileName>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level4</WarningLevel>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(QTDIR)\lib\Qt6EntryPoint.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <LinkIncremental>false</LinkIncremental>
+      <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>$(OutDir)\qtext.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <Version>0.0</Version>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;.;$(ProjectDir)release;$(ProjectDir)include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;APP_PRODUCT=QText;APP_COMPANY=Josip Medved;APP_VERSION=0.0.0;APP_COPYRIGHT=Copyright 2004 Josip Medved;APP_DESCRIPTION=QText Note taking utility with auto-save;APP_QT_VERSION=6.10.2;APP_COMMIT=8410513;QT_DEPRECATED_WARNINGS;_DEBUG</PreprocessorDefinitions>
+    </ResourceCompile>
+    <QtMoc>
+      <CompilerFlavor>msvc</CompilerFlavor>
+      <Include>./$(Configuration)/moc_predefs.h</Include>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <DynamicSource>output</DynamicSource>
+      <QtMocDir>$(Configuration)\obj</QtMocDir>
+      <QtMocFileName>moc_%(Filename).cpp</QtMocFileName>
+    </QtMoc>
+    <QtRcc>
+      <NoZstd>true</NoZstd>
+      <Compression>default</Compression>
+      <InitFuncName>qtext</InitFuncName>
+      <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
+      <QtRccDir>$(Configuration)\obj</QtRccDir>
+      <QtRccFileName>qrc_%(Filename).cpp</QtRccFileName>
+    </QtRcc>
+    <QtUic>
+      <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
+      <QtUicDir>$(ProjectDir)\obj</QtUicDir>
+      <QtUicFileName>ui_%(Filename).h</QtUicFileName>
+    </QtUic>
+    <PostBuildEvent>
+      <Command>"C:\Qt\6.10.2\msvc2022_64\bin\windeployqt.exe" --release "$(TargetPath)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;.;$(ProjectDir)debug;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -permissive- -Zc:__cplusplus -Zc:externConstexpr %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>debug\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ObjectFileName>debug\obj\</ObjectFileName>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;APP_PRODUCT="QText";APP_COMPANY="Josip Medved";APP_VERSION="0.0.0";APP_COPYRIGHT="Copyright 2004 Josip Medved";APP_DESCRIPTION="QText: Note taking utility with auto-save";APP_QT_VERSION="6.10.2";APP_COMMIT="8410513";QT_DEPRECATED_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level4</WarningLevel>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(QTDIR)\lib\Qt6EntryPointd.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <OutputFile>$(OutDir)\qtext.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <Version>0.0</Version>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;.;$(ProjectDir)debug;$(ProjectDir)include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;APP_PRODUCT=QText;APP_COMPANY=Josip Medved;APP_VERSION=0.0.0;APP_COPYRIGHT=Copyright 2004 Josip Medved;APP_DESCRIPTION=QText Note taking utility with auto-save;APP_QT_VERSION=6.10.2;APP_COMMIT=8410513;QT_DEPRECATED_WARNINGS;_DEBUG</PreprocessorDefinitions>
+    </ResourceCompile>
+    <QtMoc>
+      <CompilerFlavor>msvc</CompilerFlavor>
+      <Include>./$(Configuration)/moc_predefs.h</Include>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <DynamicSource>output</DynamicSource>
+      <QtMocDir>$(Configuration)\obj</QtMocDir>
+      <QtMocFileName>moc_%(Filename).cpp</QtMocFileName>
+    </QtMoc>
+    <QtRcc>
+      <InitFuncName>qtext</InitFuncName>
+      <Compression>default</Compression>
+      <NoZstd>true</NoZstd>
+      <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
+      <QtRccDir>$(Configuration)\obj</QtRccDir>
+      <QtRccFileName>qrc_%(Filename).cpp</QtRccFileName>
+    </QtRcc>
+    <QtUic>
+      <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
+      <QtUicDir>$(ProjectDir)\obj</QtUicDir>
+      <QtUicFileName>ui_%(Filename).h</QtUicFileName>
+    </QtUic>
+    <PostBuildEvent>
+      <Command>"C:\Qt\6.10.2\msvc2022_64\bin\windeployqt.exe" --debug "$(TargetPath)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="medo\about.cpp" />
+    <ClCompile Include="app.cpp" />
+    <ClCompile Include="medo\appsetupmutex.cpp" />
+    <ClCompile Include="clipboard.cpp" />
+    <ClCompile Include="medo\config.cpp" />
+    <ClCompile Include="deletion.cpp" />
+    <ClCompile Include="medo\feedback.cpp" />
+    <ClCompile Include="storage\fileitem.cpp" />
+    <ClCompile Include="find.cpp" />
+    <ClCompile Include="ui\finddialog.cpp" />
+    <ClCompile Include="storage\folderitem.cpp" />
+    <ClCompile Include="ui\foldersdialog.cpp" />
+    <ClCompile Include="ui\gotodialog.cpp" />
+    <ClCompile Include="helpers.cpp" />
+    <ClCompile Include="medo\hotkey.cpp" />
+    <ClCompile Include="ui\hotkeyedit.cpp" />
+    <ClCompile Include="icons.cpp" />
+    <ClCompile Include="ui\inserttimedialog.cpp" />
+    <ClCompile Include="medo\lifetimewatch.cpp" />
+    <ClCompile Include="ui\mainwindow.cpp" />
+    <ClCompile Include="ui\newfiledialog.cpp" />
+    <ClCompile Include="phoneticalphabet.cpp" />
+    <ClCompile Include="ui\phoneticdialog.cpp" />
+    <ClCompile Include="ui\qtabbarex.cpp" />
+    <ClCompile Include="ui\qtabwidgetex.cpp" />
+    <ClCompile Include="ui\renamefiledialog.cpp" />
+    <ClCompile Include="rtfconverter.cpp" />
+    <ClCompile Include="settings.cpp" />
+    <ClCompile Include="ui\settingsdialog.cpp" />
+    <ClCompile Include="setup.cpp" />
+    <ClCompile Include="medo\singleinstance.cpp" />
+    <ClCompile Include="medo\state.cpp" />
+    <ClCompile Include="storage\storage.cpp" />
+    <ClCompile Include="storage\storagemonitorlocker.cpp" />
+    <ClCompile Include="storage\storagemonitorthread.cpp" />
+    <ClCompile Include="medo\upgrade.cpp" />
+    <ClCompile Include="medo\winHotkey.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="medo\about.h" />
+    <ClInclude Include="medo\appsetupmutex.h" />
+    <ClInclude Include="clipboard.h" />
+    <ClInclude Include="medo\config.h" />
+    <ClInclude Include="deletion.h" />
+    <ClInclude Include="storage\deletionstyle.h" />
+    <ClInclude Include="medo\feedback.h" />
+    <QtMoc Include="storage\fileitem.h" />
+    <ClInclude Include="storage\filetype.h" />
+    <ClInclude Include="find.h" />
+    <QtMoc Include="ui\finddialog.h" />
+    <ClInclude Include="storage\folderitem.h" />
+    <QtMoc Include="ui\foldersdialog.h" />
+    <QtMoc Include="ui\gotodialog.h" />
+    <ClInclude Include="helpers.h" />
+    <QtMoc Include="medo\hotkey.h" />
+    <QtMoc Include="ui\hotkeyedit.h" />
+    <ClInclude Include="icons.h" />
+    <QtMoc Include="ui\inserttimedialog.h" />
+    <ClInclude Include="medo\lifetimewatch.h" />
+    <QtMoc Include="ui\mainwindow.h" />
+    <QtMoc Include="ui\newfiledialog.h" />
+    <ClInclude Include="phoneticalphabet.h" />
+    <QtMoc Include="ui\phoneticdialog.h" />
+    <QtMoc Include="ui\qtabbarex.h" />
+    <QtMoc Include="ui\qtabwidgetex.h" />
+    <QtMoc Include="ui\renamefiledialog.h" />
+    <ClInclude Include="rtfconverter.h" />
+    <ClInclude Include="settings.h" />
+    <QtMoc Include="ui\settingsdialog.h" />
+    <ClInclude Include="setup.h" />
+    <QtMoc Include="medo\singleinstance.h" />
+    <QtMoc Include="medo\state.h" />
+    <QtMoc Include="storage\storage.h" />
+    <ClInclude Include="storage\storagemonitorlocker.h" />
+    <QtMoc Include="storage\storagemonitorthread.h" />
+    <ClInclude Include="medo\upgrade.h" />
+    <QtMoc Include="medo\winHotkey.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="src\**\*.h;include\**\*.h">
+      <DependentUpon Condition="'%(Filename)'=='.h' And Exists('src\%(Filename).cpp')">src\%(Filename).cpp</DependentUpon>
+    </QtMoc>
+    <QtUic Include="src\ui\**\*.ui" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="ui\finddialog.ui" />
+    <QtUic Include="ui\foldersdialog.ui" />
+    <QtUic Include="ui\gotodialog.ui" />
+    <QtUic Include="ui\inserttimedialog.ui" />
+    <QtUic Include="ui\mainwindow.ui" />
+    <QtUic Include="ui\newfiledialog.ui" />
+    <QtUic Include="ui\phoneticdialog.ui" />
+    <QtUic Include="ui\renamefiledialog.ui" />
+    <QtUic Include="ui\settingsdialog.ui" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="icons\128x128\app.png" />
+    <None Include="icons\16x16\app.png" />
+    <None Include="icons\24x24\app.png" />
+    <None Include="icons\32x32\app.png" />
+    <None Include="icons\48x48\app.png" />
+    <None Include="icons\64x64\app.png" />
+    <None Include="icons\96x96\app.png" />
+    <None Include="icons\128x128\appBlack.png" />
+    <None Include="icons\16x16\appBlack.png" />
+    <None Include="icons\24x24\appBlack.png" />
+    <None Include="icons\32x32\appBlack.png" />
+    <None Include="icons\48x48\appBlack.png" />
+    <None Include="icons\64x64\appBlack.png" />
+    <None Include="icons\96x96\appBlack.png" />
+    <None Include="icons\128x128\appDebug.png" />
+    <None Include="icons\16x16\appDebug.png" />
+    <None Include="icons\24x24\appDebug.png" />
+    <None Include="icons\32x32\appDebug.png" />
+    <None Include="icons\48x48\appDebug.png" />
+    <None Include="icons\64x64\appDebug.png" />
+    <None Include="icons\96x96\appDebug.png" />
+    <None Include="icons\128x128\appMono.png" />
+    <None Include="icons\16x16\appMono.png" />
+    <None Include="icons\24x24\appMono.png" />
+    <None Include="icons\32x32\appMono.png" />
+    <None Include="icons\48x48\appMono.png" />
+    <None Include="icons\64x64\appMono.png" />
+    <None Include="icons\96x96\appMono.png" />
+    <None Include="icons\128x128\appWhite.png" />
+    <None Include="icons\16x16\appWhite.png" />
+    <None Include="icons\24x24\appWhite.png" />
+    <None Include="icons\32x32\appWhite.png" />
+    <None Include="icons\48x48\appWhite.png" />
+    <None Include="icons\64x64\appWhite.png" />
+    <None Include="icons\96x96\appWhite.png" />
+    <None Include="icons\16x16\bold.png" />
+    <None Include="icons\24x24\bold.png" />
+    <None Include="icons\32x32\bold.png" />
+    <None Include="icons\48x48\bold.png" />
+    <None Include="icons\64x64\bold.png" />
+    <None Include="icons\16x16\copy.png" />
+    <None Include="icons\24x24\copy.png" />
+    <None Include="icons\32x32\copy.png" />
+    <None Include="icons\48x48\copy.png" />
+    <None Include="icons\64x64\copy.png" />
+    <None Include="icons\16x16\cut.png" />
+    <None Include="icons\24x24\cut.png" />
+    <None Include="icons\32x32\cut.png" />
+    <None Include="icons\48x48\cut.png" />
+    <None Include="icons\64x64\cut.png" />
+    <None Include="icons\16x16\delete.png" />
+    <None Include="icons\24x24\delete.png" />
+    <None Include="icons\32x32\delete.png" />
+    <None Include="icons\48x48\delete.png" />
+    <None Include="icons\64x64\delete.png" />
+    <None Include="icons\16x16\file.png" />
+    <None Include="icons\24x24\file.png" />
+    <None Include="icons\32x32\file.png" />
+    <None Include="icons\48x48\file.png" />
+    <None Include="icons\64x64\file.png" />
+    <None Include="icons\16x16\find.png" />
+    <None Include="icons\24x24\find.png" />
+    <None Include="icons\32x32\find.png" />
+    <None Include="icons\48x48\find.png" />
+    <None Include="icons\64x64\find.png" />
+    <None Include="icons\16x16\findNext.png" />
+    <None Include="icons\24x24\findNext.png" />
+    <None Include="icons\32x32\findNext.png" />
+    <None Include="icons\48x48\findNext.png" />
+    <None Include="icons\64x64\findNext.png" />
+    <None Include="icons\16x16\folder.png" />
+    <None Include="icons\24x24\folder.png" />
+    <None Include="icons\32x32\folder.png" />
+    <None Include="icons\48x48\folder.png" />
+    <None Include="icons\64x64\folder.png" />
+    <None Include="icons\16x16\goto.png" />
+    <None Include="icons\24x24\goto.png" />
+    <None Include="icons\32x32\goto.png" />
+    <None Include="icons\48x48\goto.png" />
+    <None Include="icons\64x64\goto.png" />
+    <None Include="icons\16x16\italic.png" />
+    <None Include="icons\24x24\italic.png" />
+    <None Include="icons\32x32\italic.png" />
+    <None Include="icons\48x48\italic.png" />
+    <None Include="icons\64x64\italic.png" />
+    <None Include="icons\16x16\new.png" />
+    <None Include="icons\24x24\new.png" />
+    <None Include="icons\32x32\new.png" />
+    <None Include="icons\48x48\new.png" />
+    <None Include="icons\64x64\new.png" />
+    <None Include="icons\16x16\paste.png" />
+    <None Include="icons\24x24\paste.png" />
+    <None Include="icons\32x32\paste.png" />
+    <None Include="icons\48x48\paste.png" />
+    <None Include="icons\64x64\paste.png" />
+    <None Include="icons\16x16\print.png" />
+    <None Include="icons\24x24\print.png" />
+    <None Include="icons\32x32\print.png" />
+    <None Include="icons\48x48\print.png" />
+    <None Include="icons\64x64\print.png" />
+    <None Include="icons\16x16\printPdf.png" />
+    <None Include="icons\24x24\printPdf.png" />
+    <None Include="icons\32x32\printPdf.png" />
+    <None Include="icons\48x48\printPdf.png" />
+    <None Include="icons\64x64\printPdf.png" />
+    <None Include="icons\16x16\printPreview.png" />
+    <None Include="icons\24x24\printPreview.png" />
+    <None Include="icons\32x32\printPreview.png" />
+    <None Include="icons\48x48\printPreview.png" />
+    <None Include="icons\64x64\printPreview.png" />
+    <QtRcc Include="qtext.qrc" />
+    <None Include="icons\16x16\redo.png" />
+    <None Include="icons\24x24\redo.png" />
+    <None Include="icons\32x32\redo.png" />
+    <None Include="icons\48x48\redo.png" />
+    <None Include="icons\64x64\redo.png" />
+    <None Include="icons\16x16\rename.png" />
+    <None Include="icons\24x24\rename.png" />
+    <None Include="icons\32x32\rename.png" />
+    <None Include="icons\48x48\rename.png" />
+    <None Include="icons\64x64\rename.png" />
+    <None Include="icons\16x16\save.png" />
+    <None Include="icons\24x24\save.png" />
+    <None Include="icons\32x32\save.png" />
+    <None Include="icons\48x48\save.png" />
+    <None Include="icons\64x64\save.png" />
+    <None Include="icons\16x16\settings.png" />
+    <None Include="icons\24x24\settings.png" />
+    <None Include="icons\32x32\settings.png" />
+    <None Include="icons\48x48\settings.png" />
+    <None Include="icons\64x64\settings.png" />
+    <None Include="icons\16x16\settingsWithUpgrade.png" />
+    <None Include="icons\24x24\settingsWithUpgrade.png" />
+    <None Include="icons\32x32\settingsWithUpgrade.png" />
+    <None Include="icons\48x48\settingsWithUpgrade.png" />
+    <None Include="icons\64x64\settingsWithUpgrade.png" />
+    <None Include="icons\16x16\strikethrough.png" />
+    <None Include="icons\24x24\strikethrough.png" />
+    <None Include="icons\32x32\strikethrough.png" />
+    <None Include="icons\48x48\strikethrough.png" />
+    <None Include="icons\64x64\strikethrough.png" />
+    <None Include="icons\16x16\underline.png" />
+    <None Include="icons\24x24\underline.png" />
+    <None Include="icons\32x32\underline.png" />
+    <None Include="icons\48x48\underline.png" />
+    <None Include="icons\64x64\underline.png" />
+    <None Include="icons\16x16\undo.png" />
+    <None Include="icons\24x24\undo.png" />
+    <None Include="icons\32x32\undo.png" />
+    <None Include="icons\48x48\undo.png" />
+    <None Include="icons\64x64\undo.png" />
+    <None Include="icons\16x16\vscode.png" />
+    <None Include="icons\24x24\vscode.png" />
+    <None Include="icons\32x32\vscode.png" />
+    <None Include="icons\48x48\vscode.png" />
+    <None Include="icons\64x64\vscode.png" />
+    <None Include="icons\48x48\html.png" />
+    <None Include="icons\48x48\markdown.png" />
+    <None Include="icons\48x48\txt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".astylerc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include=".\qtext_resource.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Import Project="$(QtMsBuild)\qt.targets" Condition="Exists('$(QtMsBuild)\qt.targets')" />
+  <ImportGroup Label="ExtensionTargets" />
+  <Target Name="WinDeployQt" AfterTargets="Link">
+    <Exec Condition="'$(Configuration)'=='Debug'" Command="&quot;C:\Qt\6.10.2\msvc2022_64\bin\windeployqt.exe&quot; --debug &quot;$(OutDir)$(TargetName)$(TargetExt)&quot;" />
+    <Exec Condition="'$(Configuration)'=='Release'" Command="&quot;C:\Qt\6.10.2\msvc2022_64\bin\windeployqt.exe&quot; --release &quot;$(OutDir)$(TargetName)$(TargetExt)&quot;" />
+  </Target>
+</Project>

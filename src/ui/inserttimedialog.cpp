@@ -41,9 +41,10 @@ void InsertTimeDialog::onUpdateExampleTimeout() {
 }
 
 QString InsertTimeDialog::getFormattedText(QString format) {
-    if (format.trimmed().length() == 0) {
-        return QDateTime::currentDateTime().toString(Qt::SystemLocaleShortDate);
-    } else {
+    if (format.trimmed().isEmpty()) {
+        return QLocale::system().toString(QDateTime::currentDateTime(), QLocale::ShortFormat);
+    }
+    else {
         return QDateTime::currentDateTime().toString(format);
     }
 }

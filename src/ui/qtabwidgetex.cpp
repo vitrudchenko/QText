@@ -8,40 +8,59 @@ QTabWidgetEx::QTabWidgetEx(QWidget* parent)
     this->setTabBar(bar);
 
     connect(bar, &QTabBarEx::tabMoved, this, &QTabWidgetEx::onTabMoved);
+    //this->setTabsClosable(true);
 }
 
 
 int QTabWidgetEx::addTab(QWidget* widget, const QString& text) {
     FileItem* item = dynamic_cast<FileItem*>(widget);
 
-    QTabBar* tabBar = this->tabBar();
     int index = QTabWidget::addTab(widget, text);
-
-    if (Settings::tabTextColorPerType()) { //playing with color
-        QColor color = tabBar->tabTextColor(index);
-        bool isDark = ((color.red() + color.green() + color.blue()) / 3) < 64;
-        QColor newColor;
-        switch (item->type()) {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-            case FileType::Markdown: //green
-                newColor = isDark ? QColor(color.red(), 96, color.blue())
-                           : QColor(color.red() * 0.75, color.green(), color.blue() * 0.75);
-                break;
-#endif
-            case FileType::Html: //blue
-                newColor = isDark ? QColor(color.red(), color.green(), 128)
-                           : QColor(color.red() * 0.75, color.green() * 0.75, color.blue());
-                break;
-            default:
-                newColor = color;
-                break;
-        }
-        this->tabBar()->setTabTextColor(index, newColor);
-    }
-
+    this->stylizeTab(item, index);
     return index;
 }
 
+void QTabWidgetEx::stylizeTab(FileItem* item, int index) {
+    QTabBar* tabBar = this->tabBar();
+    QColor color = tabBar->tabTextColor(index);
+    bool isDark = Settings::forceDarkMode();
+    //bool isDark = ((color.red() + color.green() + color.blue()) / 3) < 64;
+    QColor newColor;
+    QIcon newIcon;
+    switch (item->type()) {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+    case FileType::Markdown: //green
+        newColor = isDark ? QColor(70, 132, 98) : QColor(90, 152, 118);
+        newIcon = QIcon(":/icons/48x48/markdown.png");
+        break;
+#endif
+    case FileType::Html: //blue
+        newColor = isDark ? QColor(65, 65, 225) : QColor(85, 85, 245);
+        newIcon = QIcon(":/icons/48x48/html.png");
+        break;
+    default:
+        newColor = isDark ? QColor(255, 255, 255) : QColor(0, 0, 0);
+        newIcon = QIcon(":/icons/48x48/txt.png");
+        break;
+    }
+
+    if (Settings::tabTextColorPerType()) { //playing with color
+        this->tabBar()->setTabTextColor(index, newColor);
+    }
+
+    QFont font = this->tabBar()->font();
+    font.setBold(true);
+    this->tabBar()->setFont(font);
+
+    if (!newIcon.isNull()) {
+        if (isDark) {
+            QImage image = newIcon.pixmap(48, 48).toImage();
+            image.invertPixels(QImage::InvertRgb);
+            newIcon = QIcon(QPixmap::fromImage(image));
+        }
+        this->tabBar()->setTabIcon(index, newIcon);
+    }
+}
 
 void QTabWidgetEx::onTabMoved(int from, int to) {
     auto fileFrom = dynamic_cast<FileItem*>(this->widget(from));

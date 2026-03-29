@@ -12,12 +12,12 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>320</width>
+    <width>200</width>
     <height>200</height>
    </size>
   </property>
   <property name="contextMenuPolicy">
-   <enum>Qt::NoContextMenu</enum>
+   <enum>Qt::ContextMenuPolicy::NoContextMenu</enum>
   </property>
   <property name="windowTitle">
    <string notr="true">QText</string>
@@ -52,7 +52,7 @@
     <item row="0" column="0">
      <widget class="QTabWidgetEx" name="tabWidget" native="true">
       <property name="contextMenuPolicy">
-       <enum>Qt::NoContextMenu</enum>
+       <enum>Qt::ContextMenuPolicy::NoContextMenu</enum>
       </property>
      </widget>
     </item>
@@ -60,7 +60,7 @@
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="contextMenuPolicy">
-    <enum>Qt::NoContextMenu</enum>
+    <enum>Qt::ContextMenuPolicy::NoContextMenu</enum>
    </property>
    <property name="movable">
     <bool>false</bool>
@@ -72,7 +72,7 @@
     </size>
    </property>
    <property name="toolButtonStyle">
-    <enum>Qt::ToolButtonIconOnly</enum>
+    <enum>Qt::ToolButtonStyle::ToolButtonIconOnly</enum>
    </property>
    <property name="floatable">
     <bool>false</bool>
@@ -84,9 +84,6 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionNew"/>
-   <addaction name="actionSave"/>
-   <addaction name="actionRename"/>
-   <addaction name="separator"/>
    <addaction name="actionCut"/>
    <addaction name="actionCopy"/>
    <addaction name="actionPaste"/>
@@ -457,6 +454,17 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+X</string>
+   </property>
+  </action>
+  <action name="actionShowSettings">
+   <property name="text">
+    <string>Show Settings</string>
+   </property>
+   <property name="toolTip">
+    <string>Show Settings</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::TextHeuristicRole</enum>
    </property>
   </action>
  </widget>

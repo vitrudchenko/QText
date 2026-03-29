@@ -31,7 +31,7 @@ FileItem::FileItem(FolderItem* folder, QString fileName)
     load();
 
     QFontMetricsF fm(this->font());
-    auto tabWidth = Settings::tabWidth() * fm.width(' ');
+    auto tabWidth = Settings::tabWidth() * fm.horizontalAdvance(' ');
     this->setTabStopDistance(tabWidth);
 
     connect(this->document(), &QTextDocument::modificationChanged, this, &FileItem::onModificationChanged);
@@ -159,7 +159,7 @@ bool FileItem::load() {
     if (file.exists()) {
         if (file.open(QIODevice::ReadOnly)) {
             QTextStream in(&file);
-            in.setCodec(_utf8Codec);
+            in.setEncoding(QStringConverter::Utf8);
             in.setAutoDetectUnicode(true);
             QString contents = in.readAll();
             QTextDocument* document = new QTextDocument(this);
@@ -183,6 +183,7 @@ bool FileItem::load() {
             file.close();
             this->setDocument(document);
             this->document()->setModified(false);
+            connect(this->document(), &QTextDocument::modificationChanged, this, &FileItem::onModificationChanged);
 
             this->blockSignals(false);
             emit titleChanged(this);
@@ -246,7 +247,7 @@ bool FileItem::save() const {
     QFile file(path());
     if (file.open(QIODevice::WriteOnly)) {
         QTextStream out(&file);
-        out.setCodec(_utf8Codec);
+        out.setEncoding(QStringConverter::Utf8);
         out.setAutoDetectUnicode(true);
         out << contents;
         out.flush();
@@ -443,7 +444,7 @@ bool FileItem::event(QEvent* event) {
             onContextMenuSelectAll();
             return true;
         } else if ((e->modifiers() == Qt::NoModifier) && (e->key() == Qt::Key_F5)) {
-            onContextMenuInsertTime();
+            onContextMenuInsertTimeExt("dd.MM.yyyy");
             return true;
         }
 
@@ -743,14 +744,6 @@ void FileItem::onContextMenuRequested(const QPoint& point) {
     connect(selectAllAction, &QAction::triggered, this, &FileItem::onContextMenuSelectAll);
     menu.addAction(selectAllAction);
 
-    menu.addSeparator();
-
-    QAction* insertDateTimeAction = new QAction("Insert &Time/Date");
-    insertDateTimeAction->setShortcut(QKeySequence("F5"));
-    insertDateTimeAction->setShortcutVisibleInContextMenu(true);
-    connect(insertDateTimeAction, &QAction::triggered, this, &FileItem::onContextMenuInsertTime);
-    menu.addAction(insertDateTimeAction);
-
     QString anchor = findAnchorAt(point);
     if (!anchor.isEmpty()) {
         QString anchorText = anchor;
@@ -773,11 +766,61 @@ void FileItem::onContextMenuRequested(const QPoint& point) {
 
     menu.addSeparator();
 
-    QAction* resetFontAction = new QAction("&Reset Font");
-    resetFontAction->setDisabled(!textCursor().hasSelection());
-    connect(resetFontAction, &QAction::triggered, this, &FileItem::onContextMenuResetFont);
-    menu.addAction(resetFontAction);
+    if (type() != FileType::Plain) {
+        QAction* insertSetFontBoldAction = new QAction("Text Bold");
+        insertSetFontBoldAction ->setShortcutVisibleInContextMenu(true);
+        insertSetFontBoldAction->setCheckable(true);
+        insertSetFontBoldAction->setChecked(isFontBold());
+        connect(insertSetFontBoldAction, &QAction::triggered, this, [this](bool checked) { setFontBold(checked); });
+        menu.addAction(insertSetFontBoldAction);
 
+        QAction* insertSetFontItalicAction = new QAction("Text Italic");
+        insertSetFontItalicAction->setShortcutVisibleInContextMenu(true);
+        insertSetFontItalicAction->setCheckable(true);
+        insertSetFontItalicAction->setChecked(isFontItalic());
+        connect(insertSetFontItalicAction, &QAction::triggered, this, [this](bool checked) { setFontItalic(checked); });
+        menu.addAction(insertSetFontItalicAction);
+
+        QAction* insertSetFontUnderlineAction = new QAction("Text Underline");
+        insertSetFontUnderlineAction->setShortcutVisibleInContextMenu(true);
+        insertSetFontUnderlineAction->setCheckable(true);
+        insertSetFontUnderlineAction->setChecked(isFontUnderline());
+        connect(insertSetFontUnderlineAction, &QAction::triggered, this, [this](bool checked) { setFontUnderline(checked); });
+        menu.addAction(insertSetFontUnderlineAction);
+
+        QAction* insertSetFontStrikethroughAction = new QAction("Text Strikethrough");
+        insertSetFontStrikethroughAction->setShortcutVisibleInContextMenu(true);
+        insertSetFontStrikethroughAction->setCheckable(true);
+        insertSetFontStrikethroughAction->setChecked(isFontStrikethrough());
+        connect(insertSetFontStrikethroughAction, &QAction::triggered, this, [this](bool checked) { setFontStrikethrough(checked); });
+        menu.addAction(insertSetFontStrikethroughAction);
+
+        menu.addSeparator();
+        
+        QAction* resetFontAction = new QAction("&Reset Font");
+        resetFontAction->setDisabled(!textCursor().hasSelection());
+        connect(resetFontAction, &QAction::triggered, this, &FileItem::onContextMenuResetFont);
+        menu.addAction(resetFontAction);
+
+        menu.addSeparator();
+    }
+
+    QAction* insertDateAction = new QAction("Insert Date");
+    insertDateAction->setShortcut(QKeySequence("F5"));
+    insertDateAction->setShortcutVisibleInContextMenu(true);
+    connect(insertDateAction, &QAction::triggered, this, [this]() { onContextMenuInsertTimeExt("dd.MM.yyyy"); });
+    menu.addAction(insertDateAction);
+
+    QAction* insertTimeAction = new QAction("Insert Time");
+    insertTimeAction->setShortcutVisibleInContextMenu(true);
+    //connect(insertTimeAction, &QAction::triggered, this, &FileItem::onContextMenuInsertTime); calling date time fomat dialog
+    connect(insertTimeAction, &QAction::triggered, this, [this]() { onContextMenuInsertTimeExt("hh:mm"); });
+    menu.addAction(insertTimeAction);
+
+    QAction* insertDateTimeAction = new QAction("Insert Date/Time");
+    insertDateTimeAction->setShortcutVisibleInContextMenu(true);
+    connect(insertDateTimeAction, &QAction::triggered, this, [this]() { onContextMenuInsertTimeExt("dd.MM.yyyy hh:mm"); });
+    menu.addAction(insertDateTimeAction);
     menu.exec(this->mapToGlobal(point));
 }
 
@@ -829,6 +872,11 @@ void FileItem::onContextMenuInsertTime() {
         textCursor().removeSelectedText();
         textCursor().insertText(dialog->formattedTime() + "\n");
     }
+}
+
+void FileItem::onContextMenuInsertTimeExt(const QString &format) {
+    textCursor().removeSelectedText();
+    textCursor().insertText(QDateTime::currentDateTime().toString(format) + "\n");
 }
 
 void FileItem::onContextMenuResetFont() {

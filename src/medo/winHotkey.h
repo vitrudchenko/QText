@@ -45,7 +45,8 @@ class WinHotkey : public QObject, QAbstractNativeEventFilter {
 
 
     protected:
-        bool nativeEventFilter(const QByteArray& eventType, void* message, long* result) override;
+        virtual bool nativeEventFilter(const QByteArray& eventType, void* message, qintptr* result) override;
+
 
     private:
         bool _isRegistered = false;

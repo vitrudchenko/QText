@@ -1,5 +1,4 @@
 #include <QCommandLineParser>
-#include <QDir>
 #include "medo/appsetupmutex.h"
 #include "medo/config.h"
 #include "medo/singleinstance.h"
@@ -15,7 +14,7 @@ int main(int argc, char* argv[]) {
     QCoreApplication::setOrganizationName(APP_COMPANY);
     QCoreApplication::setApplicationVersion(APP_VERSION);
 
-    QCoreApplication::setAttribute(Qt::AA_DisableWindowContextHelpButton);
+    //QCoreApplication::setAttribute(Qt::AA_DisableWindowContextHelpButton);
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     AppSetupMutex appMutex("JosipMedved_QText");
@@ -36,25 +35,11 @@ int main(int argc, char* argv[]) {
     }
 
     QStringList dataPaths = Settings::dataPaths();
-    Config::setStateFilePath(dataPaths[0] + "/.qtext.user"); //store state file in the first directory
+    // Do not store state file in first data folder but in same folder with QText.cfg
+    //Config::setStateFilePath(dataPaths[0] + "/.qtext.user"); //store state file in the first directory
     QApplication::connect(State::instance(), &State::writeToConfig, [ = ] (QString key, QString value) { Config::stateWrite("State!" + key, value); });
     QApplication::connect(State::instance(), &State::readFromConfig, [ = ] (QString key) { return Config::stateRead("State!" + key, QString()); });
     QApplication::connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, [ = ] () { Config::quit(); });
-
-    if (Settings::waitForDirectory()) {
-        bool anyFailed = false;
-        do {
-            anyFailed = false;
-            for (QString path : dataPaths) {
-                QDir directory = path;
-                if (!directory.exists()) {
-                    qDebug().noquote() << "Waiting for directory '" << directory << "'";
-                    QThread::msleep(100);
-                    anyFailed = true;
-                }
-            }
-        } while (anyFailed);
-    }
 
     storage = new Storage(dataPaths);
     MainWindow w { storage };

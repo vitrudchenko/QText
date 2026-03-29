@@ -65,27 +65,37 @@ class Settings {
         static int defaultFontSize() { return 11; }
 
         static bool forceDarkMode();
+        static bool showToolbar();
+        static bool showCloseButtonOnTabs();
         static void setForceDarkMode(bool newForceDarkMode);
+        static void setShowToolbar(bool newShowToolbar);
+        static void setShowCloseButtonOnTabs(bool newShowCloseButtonOnTabs);
         static bool defaultForceDarkMode() { return false; }
+        static bool defaultShowToolbar() { return true; }
+        static bool defaultShowCloseButtonOnTabs() { return true; }
 
         static bool forcePlainCopyPaste();
         static void setForcePlainCopyPaste(bool newForcePlainCopyPaste);
-        static bool defaultForcePlainCopyPaste() { return false; }
+        static bool defaultForcePlainCopyPaste() { return true; }
 
         static QKeySequence hotkey();
         static void setHotkey(QKeySequence newHotkey);
         static QKeySequence defaultHotkey() {
-            QKeySequence defaultHotkey { "Ctrl+Shift+Q" };
+            QKeySequence defaultHotkey { "" };
             return  defaultHotkey;
         }
 
         static bool hotkeyTogglesVisibility();
         static void setHotkeyTogglesVisibility(bool newHotkeyTogglesVisibility);
-        static bool defaultHotkeyTogglesVisibility() { return false; }
+        static bool defaultHotkeyTogglesVisibility() { return true; }
 
-        static bool hotkeyUseDConf();
-        static void setHotkeyUseDConf(bool newHotkeyUseDConf);
-        static bool defaultHotkeyUseDConf();
+        static bool hotkeyForceDConf();
+        static void setHotkeyForceDConf(bool newHotkeyForceDConf);
+        static bool defaultHotkeyForceDConf();
+
+        static bool hotkeyForceXcb();
+        static void setHotkeyForceXcb(bool newHotkeyForceXcb);
+        static bool defaultHotkeyForceXcb();
 
         static bool minimizeToTray();
         static void setMinimizeToTray(bool newMinimizeToTray);
@@ -97,17 +107,17 @@ class Settings {
 
         static bool showInTaskbar();
         static void setShowInTaskbar(bool newShowInTaskbar);
-        static bool defaultShowInTaskbar() { return true; }
+        static bool defaultShowInTaskbar() { return false; }
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
         static bool showMarkdown();
         static void setShowMarkdown(bool newShowMarkdown);
-        static bool defaultShowMarkdown() { return false; }
+        static bool defaultShowMarkdown() { return true; }
 #endif
 
         static bool tabTextColorPerType();
         static void setTabTextColorPerType(bool newTabTextColorPerType);
-        static bool defaultTabTextColorPerType() { return false; }
+        static bool defaultTabTextColorPerType() { return true; }
 
         static int tabWidth();
         static void setTabWidth(int newTabWidth);
@@ -120,10 +130,6 @@ class Settings {
         static bool wordWrap();
         static void setWordWrap(bool newWordWrap);
         static bool defaultWordWrap() { return true; }
-
-        static bool waitForDirectory();
-        static void setWaitForDirectory(bool newWaitForDirectory);
-        static bool defaultWaitForDirectory() { return false; }
 
 
     public:

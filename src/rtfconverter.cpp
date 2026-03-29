@@ -24,7 +24,7 @@ bool RtfConverter::convertFile(QString filePath) {
                 QFile newFile(newFilePath);
                 if (newFile.open(QIODevice::WriteOnly)) {
                     QTextStream out(&newFile);
-                    out.setCodec(QTextCodec::codecForName("UTF-8"));
+                    out.setEncoding(QStringConverter::Utf8);
                     out.setAutoDetectUnicode(true);
                     out << "<html><head></head><body>";
                     out << context.htmlOutput;
@@ -125,7 +125,7 @@ bool RtfConverter::processGroup(QBuffer& buffer, Context& context, int level) {
                 } else {
                     switch (state) {
                         case State::Command:
-                            if ((ch == ' ') || (ch == 10) || (ch == 13)) {
+                            if ((ch == QChar(' ')) || (ch == QChar('\n')) || (ch == QChar('\r'))) {
                                 if (currCommand.length() > 0) { processCommand(currCommand, context, level); }
                                 if (currTextBytes.length() > 0) { processText(currTextBytes, context, level); }
                                 state = State::Text;

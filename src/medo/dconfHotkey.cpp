@@ -148,7 +148,7 @@ bool DConfHotkey::registerHotkey(QKeySequence key) {
         for (const QString& pathSubkey : qAsConst(subkeys )) {
             if (pathSubkey.startsWith("custom") && pathSubkey.endsWith("/")) {
                 bool nOk;
-                int customNumber = pathSubkey.midRef(6, pathSubkey.length() - 7).toInt(&nOk);
+                int customNumber = QStringView{ pathSubkey }.mid(6, pathSubkey.length() - 7).toInt(&nOk);
                 if (nOk && customNumber > maxCustom) {
                     maxCustom = customNumber;
                 }

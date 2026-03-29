@@ -1,4 +1,5 @@
 #include <algorithm>
+#include "helpers.h"
 #include "settings.h"
 #include "medo/config.h"
 
@@ -51,10 +52,7 @@ QStringList Settings::dataPaths() {
     QStringList paths = Config::readMany("DataPath", defaultDataPaths());
     QStringList cleanedPaths;
     for (QString path : paths) {
-        if (path.length() > 0) {
-            QDir rootDirectory = path.startsWith("~/") ? QDir::homePath() + path.mid(1) : path;
-            cleanedPaths.append(QDir::cleanPath(rootDirectory.path()));
-        }
+        if (path.length() > 0) { cleanedPaths.append(QDir::cleanPath(path)); }
     }
     return (cleanedPaths.length() > 0) ? cleanedPaths : defaultDataPaths();
 }
@@ -163,15 +161,29 @@ void Settings::setFontSize(int newFontSize) {
     Config::write("FontSize", newFontSize);
 }
 
-
 bool Settings::forceDarkMode() {
     return Config::read("ForceDarkMode", defaultForceDarkMode());
+}
+
+bool Settings::showToolbar() {
+    return Config::read("ShowToolbar", defaultShowToolbar());
+}
+
+bool Settings::showCloseButtonOnTabs() {
+    return Config::read("ShowCloseButtonOnTabs", defaultShowCloseButtonOnTabs());
 }
 
 void Settings::setForceDarkMode(bool newForceDarkMode) {
     Config::write("ForceDarkMode", newForceDarkMode);
 }
 
+void Settings::setShowToolbar(bool newShowToolbar) {
+    Config::write("ShowToolbar", newShowToolbar);
+}
+
+void Settings::setShowCloseButtonOnTabs(bool newShowCloseButtonOnTabs) {
+    return Config::write("ShowCloseButtonOnTabs", newShowCloseButtonOnTabs);
+}
 
 bool Settings::forcePlainCopyPaste() {
     return Config::read("ForcePlainCopyPaste", defaultForcePlainCopyPaste());
@@ -184,15 +196,17 @@ void Settings::setForcePlainCopyPaste(bool newForcePlainCopyPaste) {
 
 QKeySequence Settings::hotkey() {
     QString hotkeyText = Config::read("Hotkey", "");
-    if (hotkeyText.length() > 0) {
+    if (hotkeyText.compare("-") == 0) {
+        return 0;  // explicit no shortcut
+    } else if (hotkeyText.length() > 0) {
         QKeySequence hotkeyKeys = QKeySequence(hotkeyText, QKeySequence::PortableText);
         if (hotkeyKeys.count() > 0) { return QKeySequence { hotkeyKeys[0] }; } //return first key found
     }
-    return  defaultHotkey();
+    return defaultHotkey();
 }
 
 void Settings::setHotkey(QKeySequence newHotkey) {
-    QString hotkeyText { newHotkey.toString(QKeySequence::PortableText) };
+    QString hotkeyText { newHotkey == 0 ? "-" : newHotkey.toString(QKeySequence::PortableText) };
     Config::write("Hotkey", hotkeyText);
 }
 
@@ -206,19 +220,30 @@ void Settings::setHotkeyTogglesVisibility(bool newHotkeyTogglesVisibility) {
 }
 
 
-bool Settings::hotkeyUseDConf() {
-    return Config::read("HotkeyUseDConf", defaultHotkeyUseDConf());
+bool Settings::hotkeyForceDConf() {
+    return Config::read("HotkeyForceDConf", defaultHotkeyForceDConf());
 }
 
-void Settings::setHotkeyUseDConf(bool newHotkeyUseDConf) {
-    Config::write("HotkeyUseDConf", newHotkeyUseDConf);
+void Settings::setHotkeyForceDConf(bool newHotkeyForceDConf) {
+    Config::write("HotkeyForceDConf", newHotkeyForceDConf);
 }
 
-bool Settings::defaultHotkeyUseDConf() {
-    QString sessionType = getenv("XDG_SESSION_TYPE");
-    return (sessionType.compare("wayland") == 0);
+bool Settings::defaultHotkeyForceDConf() {
+    return Helpers::isWayland();
 }
 
+
+bool Settings::hotkeyForceXcb() {
+    return Config::read("HotkeyForceXcb", defaultHotkeyForceXcb());
+}
+
+void Settings::setHotkeyForceXcb(bool newHotkeyForceXcb) {
+    Config::write("HotkeyForceXcb", newHotkeyForceXcb);
+}
+
+bool Settings::defaultHotkeyForceXcb() {
+    return false;
+}
 
 bool Settings::minimizeToTray() {
     return Config::read("MinimizeToTray", defaultMinimizeToTray());
@@ -296,15 +321,6 @@ bool Settings::wordWrap() {
 
 void Settings::setWordWrap(bool newWordWrap) {
     Config::write("WordWrap", newWordWrap);
-}
-
-
-bool Settings::waitForDirectory() {
-    return Config::read("WaitForDirectory", defaultWaitForDirectory());
-}
-
-void Settings::setWaitForDirectory(bool newWaitForDirectory) {
-    Config::write("WaitForDirectory", newWaitForDirectory);
 }
 
 

@@ -1,5 +1,7 @@
 #include <QApplication>
 #include <QTextDocument>
+#include <QRegularExpression>
+
 
 #include "find.h"
 
@@ -40,8 +42,12 @@ FileItem* Find::findNext(FileItem* currentFile, bool backward) {
         auto document = file->document();
         QTextCursor resultCursor;
         if (_findUseRegEx) {
-            auto regEx = QRegExp(_findText, _findFlags.testFlag(QTextDocument::FindCaseSensitively) ? Qt::CaseSensitive : Qt::CaseInsensitive);
-            resultCursor = document->find(regEx, cursor, flags);
+            QRegularExpression::PatternOptions options = QRegularExpression::NoPatternOption;
+            if (_findFlags.testFlag(QTextDocument::FindCaseSensitively))
+                options |= QRegularExpression::CaseInsensitiveOption;  // Opposite logic!
+            auto regEx = QRegularExpression(_findText, options);
+
+            resultCursor = document->find(regEx.pattern(), cursor, flags);
         } else {
             resultCursor = document->find(_findText, cursor, flags);
         }

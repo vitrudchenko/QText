@@ -1,0 +1,804 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Distribution Files">
+      <UniqueIdentifier>{B83CAF91-C7BF-462F-B76C-EA11631F866C}</UniqueIdentifier>
+      <Extensions>*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Distribution Files">
+      <UniqueIdentifier>{B83CAF91-C7BF-462F-B76C-EA11631F866C}</UniqueIdentifier>
+      <Extensions>*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="medo\about.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="app.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="medo\appsetupmutex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="clipboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="medo\config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="deletion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="medo\feedback.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="storage\fileitem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="find.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\finddialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="storage\folderitem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\foldersdialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\gotodialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="helpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="medo\hotkey.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\hotkeyedit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="icons.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\inserttimedialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="medo\lifetimewatch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\mainwindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\newfiledialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="phoneticalphabet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\phoneticdialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\qtabbarex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\qtabwidgetex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\renamefiledialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rtfconverter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\settingsdialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="setup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="medo\singleinstance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="medo\state.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="storage\storage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="storage\storagemonitorlocker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="storage\storagemonitorthread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="medo\upgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="medo\winHotkey.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="medo\about.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="medo\appsetupmutex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="clipboard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="medo\config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="deletion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="storage\deletionstyle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="medo\feedback.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="storage\fileitem.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="storage\filetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="find.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="ui\finddialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="storage\folderitem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="ui\foldersdialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ui\gotodialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="helpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="medo\hotkey.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ui\hotkeyedit.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="icons.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="ui\inserttimedialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="medo\lifetimewatch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="ui\mainwindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ui\newfiledialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="phoneticalphabet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="ui\phoneticdialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ui\qtabbarex.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ui\qtabwidgetex.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ui\renamefiledialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="rtfconverter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="ui\settingsdialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="setup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="medo\singleinstance.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="medo\state.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="storage\storage.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="storage\storagemonitorlocker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="storage\storagemonitorthread.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="medo\upgrade.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="medo\winHotkey.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="ui\finddialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="ui\foldersdialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="ui\gotodialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="ui\inserttimedialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="ui\mainwindow.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="ui\newfiledialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="ui\phoneticdialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="ui\renamefiledialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="ui\settingsdialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="icons\128x128\app.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\app.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\app.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\app.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\app.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\app.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\96x96\app.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\128x128\appBlack.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\appBlack.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\appBlack.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\appBlack.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\appBlack.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\appBlack.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\96x96\appBlack.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\128x128\appDebug.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\appDebug.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\appDebug.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\appDebug.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\appDebug.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\appDebug.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\96x96\appDebug.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\128x128\appMono.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\appMono.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\appMono.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\appMono.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\appMono.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\appMono.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\96x96\appMono.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\128x128\appWhite.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\appWhite.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\appWhite.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\appWhite.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\appWhite.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\appWhite.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\96x96\appWhite.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\bold.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\bold.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\bold.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\bold.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\bold.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\copy.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\copy.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\copy.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\copy.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\copy.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\cut.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\cut.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\cut.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\cut.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\cut.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\delete.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\delete.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\delete.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\delete.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\delete.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\file.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\file.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\file.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\file.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\file.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\find.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\find.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\find.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\find.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\find.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\findNext.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\findNext.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\findNext.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\findNext.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\findNext.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\folder.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\folder.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\folder.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\folder.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\folder.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\goto.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\goto.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\goto.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\goto.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\goto.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\italic.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\italic.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\italic.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\italic.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\italic.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\new.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\new.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\new.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\new.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\new.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\paste.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\paste.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\paste.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\paste.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\paste.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\print.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\print.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\print.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\print.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\print.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\printPdf.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\printPdf.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\printPdf.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\printPdf.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\printPdf.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\printPreview.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\printPreview.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\printPreview.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\printPreview.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\printPreview.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <QtRcc Include="qtext.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+    <None Include="icons\16x16\redo.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\redo.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\redo.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\redo.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\redo.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\rename.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\rename.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\rename.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\rename.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\rename.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\save.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\save.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\save.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\save.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\save.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\settings.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\settings.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\settings.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\settings.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\settings.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\settingsWithUpgrade.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\settingsWithUpgrade.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\settingsWithUpgrade.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\settingsWithUpgrade.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\settingsWithUpgrade.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\strikethrough.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\strikethrough.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\strikethrough.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\strikethrough.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\strikethrough.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\underline.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\underline.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\underline.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\underline.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\underline.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\undo.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\undo.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\undo.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\undo.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\undo.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\16x16\vscode.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\24x24\vscode.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\32x32\vscode.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\vscode.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\64x64\vscode.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\html.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\markdown.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="icons\48x48\txt.png">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".astylerc">
+      <Filter>Distribution Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include=".\qtext_resource.rc" />
+  </ItemGroup>
+</Project>

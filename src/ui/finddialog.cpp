@@ -101,8 +101,8 @@ void FindDialog::onStateChanged() {
                            "\\t: Matches the ASCII horizontal tab (HT, 0x09)."  "\n"
                            "\\v: Matches the ASCII vertical tab (VT, 0x0B).";
         ui->comboSearch->setToolTip(toolTipText);
-        auto regex = QRegExp(text);
-        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(regex.isValid() && !regex.isEmpty());
+        QRegularExpression regex(text, QRegularExpression::CaseInsensitiveOption);
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(regex.isValid() && !text.isEmpty());
     } else {
         ui->comboSearch->setToolTip(QString());
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(text.length() > 0);

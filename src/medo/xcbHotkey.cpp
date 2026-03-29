@@ -1,6 +1,7 @@
 #include "xcbHotkey.h"
 #include <QCoreApplication>
 #include <QDebug>
+#ifdef Q_OS_LINUX
 #include <QX11Info>
 #include <xcb/xcb.h>
 #include <X11/keysym.h>
@@ -148,3 +149,4 @@ bool XcbHotkey::nativeEventFilter(const QByteArray&, void* message, long*) {
     }
     return false;
 }
+#endif

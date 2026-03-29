@@ -4,7 +4,8 @@
 #include <QFocusEvent>
 #include <QPrinter>
 #include <QString>
-#include <QTextCodec>
+#include <QStringDecoder>
+#include <QStringEncoder>
 #include <QTextEdit>
 #include <QTimer>
 #include <QUuid>
@@ -75,7 +76,7 @@ class FileItem : public QTextEdit {
         FolderItem* _folder = nullptr;
         QString _fileName;
         QTextEdit* _editor = nullptr;
-        QTextCodec* _utf8Codec = QTextCodec::codecForName("UTF-8");
+        QStringEncoder _utf8Encoder = QStringEncoder(QStringEncoder::Utf8);
         QTimer* _timerSavePending = nullptr;
         mutable QDateTime _modificationTime;
         int zoomAmount = 0;
@@ -104,6 +105,7 @@ class FileItem : public QTextEdit {
         void onContextMenuDelete();
         void onContextMenuSelectAll();
         void onContextMenuInsertTime();
+        void onContextMenuInsertTimeExt(const QString&);
         void onContextMenuResetFont();
         void onContextCopyUrl();
         void onContextGoToUrl();

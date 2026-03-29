@@ -9,7 +9,7 @@
 #endif
 
 SingleInstance SingleInstance::_instance;
-QMutex SingleInstance::_mutex(QMutex::NonRecursive);
+QMutex SingleInstance::_mutex;
 QLocalServer* SingleInstance::_server(nullptr);
 bool SingleInstance::_isFirstInstance(false);
 

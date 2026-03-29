@@ -61,7 +61,7 @@ bool GotoDialog::eventFilter(QObject* obj, QEvent* event) {
 void GotoDialog::accept() {
     if (ui->listWidget->selectedItems().count() > 0) {
         auto selectedItem = ui->listWidget->selectedItems().first();
-        auto keys = selectedItem->data(Qt::UserRole).toString().split('\0');
+        auto keys = selectedItem->data(Qt::UserRole).toString().split(QChar('\0'));
         _folderKey = keys[0];
         _fileKey = (keys.count() == 2) ? keys[1] : "";
         QDialog::accept();
@@ -118,10 +118,10 @@ void GotoDialog::onTextEdited(const QString& text) {
         auto title2 = item2->text();
         auto startsWith1 = title1.startsWith(title, Qt::CaseInsensitive);
         auto startsWith2 = title2.startsWith(title, Qt::CaseInsensitive);
-        auto isFolder1 = item1->data(Qt::UserRole).toString().contains('\0');
-        auto isFolder2 = item2->data(Qt::UserRole).toString().contains('\0');
-        auto folderKey1 = item1->data(Qt::UserRole).toString().split('\0')[0];
-        auto folderKey2 = item2->data(Qt::UserRole).toString().split('\0')[0];
+        auto isFolder1 = item1->data(Qt::UserRole).toString().contains(QChar('\0'));
+        auto isFolder2 = item2->data(Qt::UserRole).toString().contains(QChar('\0'));
+        auto folderKey1 = item1->data(Qt::UserRole).toString().split(QChar('\0'))[0];
+        auto folderKey2 = item2->data(Qt::UserRole).toString().split(QChar('\0'))[0];
 
         if (startsWith1 && !startsWith2) { //sort matching prefixes first
             return true;

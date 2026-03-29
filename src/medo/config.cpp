@@ -7,10 +7,12 @@
 #include <QStandardPaths>
 #include <QTextStream>
 #include <QTimer>
+#include <QRecursiveMutex>
 
-QMutex Config::_publicAccessMutex(QMutex::Recursive);
-QMutex Config::_configFileMutex(QMutex::NonRecursive);
-QMutex Config::_stateFileMutex(QMutex::NonRecursive);
+
+QRecursiveMutex  Config::_publicAccessMutex;
+QRecursiveMutex  Config::_configFileMutex;
+QRecursiveMutex  Config::_stateFileMutex;
 QString Config::_configurationFilePath;
 QString Config::_stateFilePath;
 QString Config::_dataDirectoryPath;
@@ -295,7 +297,13 @@ QString Config::stateFilePathWhenInstalled() {
 
 QString Config::dataDirectory() {
     QMutexLocker locker(&_publicAccessMutex);
-    return dataDirectoryPath();
+
+    QString dataPath = dataDirectoryPath();
+
+    QDir dataDir (dataPath);
+    if (!dataDir.exists()) { dataDir.mkpath("."); }
+
+    return dataPath;
 }
 
 QString Config::dataDirectoryPath() {
@@ -320,7 +328,7 @@ QString Config::dataDirectoryPathWhenPortable() {
     assert(applicationName.length() > 0);
 
     QString exeDir = QCoreApplication::applicationDirPath();
-    QString dataDirectory = exeDir + "/" + applicationName + ".Data";
+    QString dataDirectory = exeDir + "/" + applicationName;// +".Data";
 #elif defined(Q_OS_LINUX)
     QString applicationName = QCoreApplication::applicationName().simplified().replace(" ", "").toLower(); //lowercase with spaces removed
     assert(applicationName.length() > 0);
@@ -339,7 +347,7 @@ QString Config::dataDirectoryPathWhenInstalled() {
     assert(applicationName.length() > 0);
 
     QString appDataLocation = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    QString dataDirectory = appDataLocation + "/Data";
+    QString dataDirectory = appDataLocation;// +"/Data";
 #elif defined(Q_OS_LINUX)
     QString applicationName = QCoreApplication::applicationName().simplified().replace(" ", "").toLower(); //lowercase with spaces removed
     assert(applicationName.length() > 0);
@@ -648,7 +656,7 @@ Config::ConfigFile::ConfigFile(QString kind, QString filePath) {
     QFile file(filePath);
     if (file.open(QFile::ReadOnly)) {
         QTextStream in(&file);
-        in.setCodec("UTF-8");
+        in.setEncoding(QStringConverter::Utf8);
         fileContent = in.readAll(); //we'll handle new-line ourselves
 
         if (!fileContent.isNull()) {
@@ -915,7 +923,7 @@ bool Config::ConfigFile::save() {
     QSaveFile file(_filePath);
     if (file.open(QIODevice::WriteOnly)) {
         QTextStream out(&file);
-        out.setCodec("UTF-8");
+        out.setEncoding(QStringConverter::Utf8);
         out << content;
         if (file.commit()) {
             qDebug().noquote().nospace() << "[Config:" << _kind << "] save() done in " << stopwatch.elapsed() << "ms";
@@ -1196,7 +1204,7 @@ void Config::ConfigFile::LineData::escapeIntoStringBuilder(QString* sb, QString 
             case '#': sb->append("\\#"); break;
             default:
                 if (!ch.isPrint()) {
-                    sb->append(QString("%1").arg(ch.unicode(), 4, 16, QChar('0')));
+                    sb->append(QString("%1").asprintf("%02X", static_cast<uint>(ch.unicode())));
                 } else if (ch == ' ') {
                     if ((i == 0) || (i == (text.length() - 1)) || isKey) {
                         sb->append("\\_");
@@ -1213,7 +1221,7 @@ void Config::ConfigFile::LineData::escapeIntoStringBuilder(QString* sb, QString 
                         case '\r': sb->append("\\r"); break;
                         case '\t': sb->append("\\t"); break;
                         case '\v': sb->append("\\v"); break;
-                        default: sb->append(QString("%1").arg(ch.unicode(), 4, 16, QChar('0'))); break;
+                        default: sb->append(QString("%1").asprintf("%02X", static_cast<uint>(ch.unicode()))); break;
                     }
                 } else if (ch == '\\') {
                     sb->append("\\\\");

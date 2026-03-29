@@ -86,32 +86,21 @@ MainWindow::MainWindow(Storage* storage) : QMainWindow(nullptr), ui(new Ui::Main
     _tray->show();
 
     //hotkey
-    if (QString::fromUtf8(getenv("XDG_CURRENT_DESKTOP")).compare("KDE", Qt::CaseSensitive) != 0) {
-        _hotkey = new Hotkey(this);
-        _hotkey->registerHotkey(Settings::hotkey());
-        connect(_hotkey, &Hotkey::activated, this, &MainWindow::onHotkeyPress);
-
-#if defined(Q_OS_LINUX)
-        if (Settings::hotkeyUseDConf()) {
-            _dconfHotkey = new DConfHotkey("QText", this);
-            if (_dconfHotkey->hasRegisteredHotkey() == false) {  // register if not already in settings
-                _dconfHotkey->registerHotkey(Settings::hotkey());
-            }
-        }
-#endif
-    }
+    _hotkey = new Hotkey("QText", Settings::hotkeyForceDConf(), Settings::hotkeyForceXcb(), this);
+    _hotkey->registerHotkey(Settings::hotkey());
+    connect(_hotkey, &Hotkey::activated, this, &MainWindow::onHotkeyPress);
 
     //single instance
-    connect(SingleInstance::instance(), &SingleInstance::newInstanceDetected, this, &MainWindow::onTrayShow);
+    connect(SingleInstance::instance(), &SingleInstance::newInstanceDetected, this, &MainWindow::onHotkeyPress);
 
     //toolbar setup
     connect(ui->actionNew, &QAction::triggered, this, &MainWindow::onFileNew);
     connect(ui->actionSave, &QAction::triggered, this, &MainWindow::onFileSave);
     connect(ui->actionRename, &QAction::triggered, this, &MainWindow::onFileRename);
     connect(ui->actionDelete, &QAction::triggered, this, &MainWindow::onFileDelete);
-    connect(ui->actionPrint, &QAction::triggered, this, &MainWindow::onFilePrint);
-    connect(ui->actionPrintPreview, &QAction::triggered, this, &MainWindow::onFilePrintPreview);
-    connect(ui->actionPrintToPdf, &QAction::triggered, this, &MainWindow::onFilePrintToPdf);
+    //connect(ui->actionPrint, &QAction::triggered, this, &MainWindow::onFilePrint);
+    //connect(ui->actionPrintPreview, &QAction::triggered, this, &MainWindow::onFilePrintPreview);
+    //connect(ui->actionPrintToPdf, &QAction::triggered, this, &MainWindow::onFilePrintToPdf);
     connect(ui->actionCut, &QAction::triggered, this, &MainWindow::onTextCut);
     connect(ui->actionCopy, &QAction::triggered, this, &MainWindow::onTextCopy);
     connect(ui->actionPaste, &QAction::triggered, this, &MainWindow::onTextPaste);
@@ -126,15 +115,15 @@ MainWindow::MainWindow(Storage* storage) : QMainWindow(nullptr), ui(new Ui::Main
     connect(ui->actionGoto, &QAction::triggered, this, &MainWindow::onGoto);
 
     //print button menu
-    _printButton = new QToolButton();
-    _printButton->setPopupMode(QToolButton::MenuButtonPopup);
-    _printButton->setMenu(new QMenu());
-    connect(_printButton, &QToolButton::clicked, this, &MainWindow::onFilePrint);
+    //_printButton = new QToolButton();
+    //_printButton->setPopupMode(QToolButton::MenuButtonPopup);
+    //_printButton->setMenu(new QMenu());
+    //connect(_printButton, &QToolButton::clicked, this, &MainWindow::onFilePrint);
 
-    _printButton->menu()->addAction(ui->actionPrint);
-    _printButton->menu()->addAction(ui->actionPrintPreview);
-    _printButton->menu()->addAction(ui->actionPrintToPdf);
-    ui->mainToolBar->insertWidget(ui->mainToolBar->actions()[3], _printButton);
+    //_printButton->menu()->addAction(ui->actionPrint);
+    //_printButton->menu()->addAction(ui->actionPrintPreview);
+    //_printButton->menu()->addAction(ui->actionPrintToPdf);
+    //ui->mainToolBar->insertWidget(ui->mainToolBar->actions()[3], _printButton);
 
     //align-right
     QWidget* spacerWidget = new QWidget(this);
@@ -158,6 +147,7 @@ MainWindow::MainWindow(Storage* storage) : QMainWindow(nullptr), ui(new Ui::Main
     connect(ui->actionShowContainingDirectory,  &QAction::triggered, this, &MainWindow::onShowContainingDirectory);
     connect(ui->actionShowContainingDirectoryOnly,  &QAction::triggered, this, &MainWindow::onShowContainingDirectoryOnly);
     connect(ui->actionCopyContainingPath,  &QAction::triggered, this, &MainWindow::onCopyContainingPath);
+    connect(ui->actionShowSettings, &QAction::triggered, this, &MainWindow::onAppSettings);
 
     //app button menu
     _appButton = new QToolButton();
@@ -203,12 +193,15 @@ MainWindow::MainWindow(Storage* storage) : QMainWindow(nullptr), ui(new Ui::Main
     connect(ui->tabWidget->tabBar(), &QTabBar::customContextMenuRequested, this, &MainWindow::onTabMenuRequested);
     connect(ui->tabWidget, &QTabWidget::currentChanged, this, &MainWindow::onTabChanged);
     connect(ui->tabWidget, &QTabWidgetEx::tabMoved, this, &MainWindow::onTabMoved);
+    connect(ui->tabWidget->tabBar(), &QTabBar::tabBarDoubleClicked, this, &MainWindow::onFileNew);
+    connect(ui->tabWidget->tabBar(), &QTabBar::tabCloseRequested, this, &MainWindow::onFileDelete);
 
     //clipboard
     connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &MainWindow::onTextStateChanged);
 
     //State
-    State::load(this);
+    // Moved to applySettings() in order to fix moving window itself when invisible in taskbar
+    //State::load(this);
 
     //show shortcuts in context menu
     for (QAction* action : findChildren<QAction*>()) {
@@ -226,10 +219,11 @@ MainWindow::MainWindow(Storage* storage) : QMainWindow(nullptr), ui(new Ui::Main
     //settings
     applySettings();
 
-    if (!Settings::setupCompleted()) { // show extra info when ran first time
+    // Do not show notification
+    /*if (!Settings::setupCompleted()) { // show extra info when ran first time
         auto duration = Config::isPortable() ? 1000 : 2500; //shorter duration if config is portable
         _tray->showMessage(QCoreApplication::applicationName(), _tray->toolTip(), QSystemTrayIcon::Information, duration);
-    }
+    }*/
 
     //determine last used folder
     if (!selectFolder(Settings::lastFolder())) {
@@ -542,8 +536,8 @@ void MainWindow::onFilePrint() {
     Helpers::setupResizableDialog(&dialog);
     dialog.setWindowTitle("Print: " + file->title());
     if (file->textCursor().hasSelection()) {
-        dialog.addEnabledOption(QAbstractPrintDialog::PrintSelection);
-        dialog.setPrintRange(QAbstractPrintDialog::Selection); //make selection default
+        dialog.setOption(QAbstractPrintDialog::PrintSelection, true);  // enables PrintSelection
+        dialog.setPrintRange(QAbstractPrintDialog::Selection);
     }
 
     if (dialog.exec() == QDialog::Accepted) {
@@ -690,7 +684,7 @@ void MainWindow::onFolderMenuShow() {
         if (isFirst) {
             isFirst = false;
         } else {
-            if (folder->isRoot()) { _folderButton->menu()->addSeparator();                 }
+            if (folder->isRoot()) { _folderButton->menu()->addSeparator(); }
         }
         QAction* folderAction = new QAction(folder->title());
         folderAction->setData(folder->name());
@@ -739,6 +733,7 @@ void MainWindow::onFileConvert() {
         auto type = static_cast<FileType>(action->data().value<int>());
         file->setType(type);
         onTextStateChanged();
+        ui->tabWidget->stylizeTab(file, ui->tabWidget->currentIndex());
     }
 }
 
@@ -796,7 +791,7 @@ void MainWindow::onPhoneticSpelling() {
 
 void MainWindow::onTopMost() {
     Settings::setAlwaysOnTop(!Settings::alwaysOnTop());
-    applySettings(false, false, true, false, false, false, false, false);
+    applySettings(false, false, true, false, false, false, false);
     this->show(); //to show window after setWindowFlag
     this->activateWindow();
 }
@@ -808,7 +803,6 @@ void MainWindow::onAppSettings() {
                       dialog->changedTabTextColorPerType(),
                       dialog->changedAlwaysOnTop(),
                       dialog->changedHotkey(),
-                      dialog->changedHotkeyUseDConf(),
                       dialog->changedDataPath(),
                       dialog->changedFont(),
                       dialog->changedForceDarkMode());
@@ -908,13 +902,13 @@ void MainWindow::onTabMenuRequested(const QPoint& point) {
         menu.addSeparator();
         menu.addAction(ui->actionOpenWithDefaultApplication);
         if (vscodeAvailable) { menu.addAction(ui->actionOpenWithVisualStudioCode); }
-        menu.addAction(ui->actionShowContainingDirectory);
-        menu.addAction(ui->actionCopyContainingPath);
     } else {
         menu.addSeparator();
-        menu.addAction(ui->actionShowContainingDirectoryOnly);
-        menu.addAction(ui->actionCopyContainingPath);
     }
+
+    menu.addAction(ui->actionShowContainingDirectory);
+    menu.addAction(ui->actionCopyContainingPath);
+    menu.addAction(ui->actionShowSettings);
 
     menu.exec(tabbar->mapToGlobal(point));
 }
@@ -927,10 +921,10 @@ void MainWindow::onTabChanged() {
 
     ui->actionSave->setDisabled(!exists || file->isModified());
     ui->actionRename->setDisabled(hasAny);
-    _printButton->setDisabled(hasAny);
-    ui->actionPrint->setDisabled(hasAny);
-    ui->actionPrintPreview->setDisabled(hasAny);
-    ui->actionPrintToPdf->setDisabled(hasAny);
+    //_printButton->setDisabled(hasAny);
+    //ui->actionPrint->setDisabled(hasAny);
+    //ui->actionPrintPreview->setDisabled(hasAny);
+    //ui->actionPrintToPdf->setDisabled(hasAny);
 
     onTextStateChanged();
 
@@ -1082,7 +1076,7 @@ void MainWindow::selectFile(FileItem* file) {
     }
 }
 
-void MainWindow::applySettings(bool applyShowInTaskbar, bool applyTabTextColorPerType, bool applyAlwaysOnTop, bool applyHotkey, bool applyDConfHotkey, bool applyDataPath, bool applyFont, bool applyForceDarkMode) {
+void MainWindow::applySettings(bool applyShowInTaskbar, bool applyTabTextColorPerType, bool applyAlwaysOnTop, bool applyHotkey, bool applyDataPath, bool applyFont, bool applyForceDarkMode) {
     if (applyDataPath) {
         _storage->saveAll();
         ui->tabWidget->clear();
@@ -1093,33 +1087,9 @@ void MainWindow::applySettings(bool applyShowInTaskbar, bool applyTabTextColorPe
         connect(_storage, &Storage::updatedFolder, this, &MainWindow::onUpdatedFolder);
     }
 
-    if (applyHotkey) { //just register again with the new key
-        if (_hotkey != nullptr) {
-            _hotkey->unregisterHotkey();
-            _hotkey->registerHotkey(Settings::hotkey());
-        }
-#if defined(Q_OS_LINUX)
-        if (_dconfHotkey != nullptr) {
-            if (Settings::hotkeyUseDConf()) {
-                _dconfHotkey->registerHotkey(Settings::hotkey());
-            }
-        }
-#endif
+    if (applyHotkey) {  // hotkey class will sort out unregister first
+        _hotkey->reregisterHotkey(Settings::hotkey());
     }
-
-#if defined(Q_OS_LINUX)
-    if (applyDConfHotkey) {
-        if (_dconfHotkey != nullptr) {
-            if (Settings::hotkeyUseDConf()) {
-                if (!applyHotkey) {  // apply only if not applied already above
-                    _dconfHotkey->registerHotkey(Settings::hotkey());
-                }
-            } else {
-                _dconfHotkey->unregisterHotkey();
-            }
-        }
-    }
-#endif
 
     if (applyAlwaysOnTop) { //always on top might require restart (at least on Linux)
         auto flags = windowFlags();
@@ -1142,7 +1112,10 @@ void MainWindow::applySettings(bool applyShowInTaskbar, bool applyTabTextColorPe
         selectFolder(_folder);
     }
 
-    if (applyForceDarkMode) { applyToolbarIcons(); }
+    if (applyForceDarkMode) { 
+        applyToolbarIcons();
+        selectFolder(_folder);
+    }
 
     if (applyFont) {
         for (auto i = 0; i < ui->tabWidget->count(); i++) {  // refresh all tabs
@@ -1150,6 +1123,10 @@ void MainWindow::applySettings(bool applyShowInTaskbar, bool applyTabTextColorPe
             file->load();
         }
     }
+
+    State::load(this);
+    ui->mainToolBar->setVisible(Settings::showToolbar());
+    ui->tabWidget->setTabsClosable(Settings::showCloseButtonOnTabs());
 }
 
 void MainWindow::applyToolbarIcons() {
@@ -1161,9 +1138,9 @@ void MainWindow::applyToolbarIcons() {
     ui->actionSave->setIcon(Icons::saveFile());
     ui->actionRename->setIcon(Icons::renameFile());
     ui->actionDelete->setIcon(Icons::deleteFile());
-    ui->actionPrint->setIcon(Icons::printFile());
-    ui->actionPrintPreview->setIcon(Icons::printPreviewFile());
-    ui->actionPrintToPdf->setIcon(Icons::printToPdfFile());
+    //ui->actionPrint->setIcon(Icons::printFile());
+    //ui->actionPrintPreview->setIcon(Icons::printPreviewFile());
+    //ui->actionPrintToPdf->setIcon(Icons::printToPdfFile());
     ui->actionCut->setIcon(Icons::cut());
     ui->actionCopy->setIcon(Icons::copy());
     ui->actionPaste->setIcon(Icons::paste());
@@ -1176,7 +1153,7 @@ void MainWindow::applyToolbarIcons() {
     ui->actionFind->setIcon(Icons::find());
     ui->actionFindNext->setIcon(Icons::findNext());
     ui->actionGoto->setIcon(Icons::gotoIcon());
-    _printButton->setIcon(Icons::printFile());
+    //_printButton->setIcon(Icons::printFile());
     _appButton->setIcon(Icons::settings());
 }
 

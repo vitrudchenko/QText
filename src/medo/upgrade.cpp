@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <QDesktopServices>
-#include <QDesktopWidget>
+#include <QGuiApplication>
+#include <QScreen>
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QDir>
@@ -15,12 +16,18 @@
 #include <QSslConfiguration>
 #include <QTimer>
 #include <QVBoxLayout>
+#include <QStandardPaths>
 #include "upgrade.h"
 
 bool Upgrade::showDialog(QWidget* parent, QUrl serviceUrl) {
-    QRect geometry = (parent != nullptr)
-                     ? QDesktopWidget().availableGeometry(parent)
-                     : QGuiApplication::primaryScreen()->availableGeometry();
+    QRect geometry;
+    if (parent != nullptr) {
+        geometry = parent->screen()->availableGeometry();
+    }
+    else {
+        geometry = QGuiApplication::primaryScreen()->availableGeometry();
+    }
+
     int dialogWidth = geometry.width() / 6;
     if (dialogWidth < 400) { dialogWidth = 400; }
 
@@ -202,8 +209,7 @@ QString Upgrade::processUrl(QUrl url, int* statusCode) {
     network.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
 
     QNetworkRequest request(url);
-    request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::AlwaysNetwork);
-    request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, false);
+    request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
     request.setMaximumRedirectsAllowed(0);
     if (url.scheme() == "https") {
         QSslConfiguration sslConfig = QSslConfiguration::defaultConfiguration();
@@ -281,7 +287,7 @@ bool UpgradeFile::downloadFile(QString fileName, int timeout, QProgressBar* prog
 
     QNetworkRequest request(_downloadUrl);
     request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::AlwaysNetwork);
-    request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+    request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
     request.setMaximumRedirectsAllowed(3);
     if (_downloadUrl.scheme() == "https") {
         QSslConfiguration sslConfig;

@@ -26,11 +26,15 @@ void Setup::setAutostart(bool newAutostart) {
 void Setup::nativeAutostartAdd() {
     QString valueName = QCoreApplication::applicationName();
     QString value = QString("\"%1\" --hide").arg(QDir::toNativeSeparators(QCoreApplication::applicationFilePath()));
+
     HKEY runKey = nullptr;
-    if (RegOpenKeyEx(HKEY_CURRENT_USER, TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\Run"), 0, KEY_WRITE, &runKey) == ERROR_SUCCESS) {
-        QByteArray buffer = QByteArray(reinterpret_cast<const char*>(value.utf16()), (value.length() + 1) * 2);
-        RegSetValueEx(runKey, reinterpret_cast<LPCWSTR>(valueName.utf16()), 0, REG_SZ,
-                      reinterpret_cast<const unsigned char*>(buffer.constData()), static_cast<DWORD>(buffer.size()));
+    if (RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+        0, KEY_WRITE, &runKey) == ERROR_SUCCESS) {
+        LPCWSTR namePtr = reinterpret_cast<LPCWSTR>(valueName.utf16());
+        LPCWSTR valuePtr = reinterpret_cast<LPCWSTR>(value.utf16());
+        RegSetValueExW(runKey, namePtr, 0, REG_SZ,
+            reinterpret_cast<const BYTE*>(valuePtr),
+            (value.length() + 1) * sizeof(wchar_t));
     }
     RegCloseKey(runKey);
 }
@@ -38,8 +42,10 @@ void Setup::nativeAutostartAdd() {
 void Setup::nativeAutostartRemove() {
     QString valueName = QCoreApplication::applicationName();
     HKEY runKey = nullptr;
-    if (RegOpenKeyEx(HKEY_CURRENT_USER, TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\Run"), 0, KEY_WRITE, &runKey) == ERROR_SUCCESS) {
-        RegDeleteValue(runKey, reinterpret_cast<LPCWSTR>(valueName.utf16()));
+    if (RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+        0, KEY_WRITE, &runKey) == ERROR_SUCCESS) {
+        LPCWSTR namePtr = reinterpret_cast<LPCWSTR>(valueName.utf16());
+        RegDeleteValueW(runKey, namePtr);
     }
     RegCloseKey(runKey);
 }
@@ -48,12 +54,17 @@ bool Setup::nativeAutostartCheck() {
     QString valueName = QCoreApplication::applicationName();
     QString expectedValue = QString("\"%1\" --hide").arg(QDir::toNativeSeparators(QCoreApplication::applicationFilePath()));
     bool isFound = false;
+
     HKEY runKey = nullptr;
-    if (RegOpenKeyEx(HKEY_CURRENT_USER, TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\Run"), 0, KEY_READ, &runKey) == ERROR_SUCCESS) {
-        ushort valueBuffer[4096];
+    if (RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+        0, KEY_READ, &runKey) == ERROR_SUCCESS) {
+        wchar_t valueBuffer[4096];
         DWORD valueBufferSize = sizeof(valueBuffer);
-        if (RegGetValue(runKey, nullptr, reinterpret_cast<LPCWSTR>(valueName.utf16()), RRF_RT_REG_SZ, nullptr, valueBuffer, &valueBufferSize) ==  ERROR_SUCCESS) {
-            auto value = QString::fromUtf16(valueBuffer, static_cast<int>(valueBufferSize) / 2 - 1);
+        LPCWSTR namePtr = reinterpret_cast<LPCWSTR>(valueName.utf16());
+
+        if (RegGetValueW(runKey, nullptr, namePtr, RRF_RT_REG_SZ, nullptr,
+            valueBuffer, &valueBufferSize) == ERROR_SUCCESS) {
+            QString value = QString::fromWCharArray(valueBuffer);
             isFound = (expectedValue.compare(value) == 0);
         }
     }
@@ -72,13 +83,13 @@ void Setup::nativeAutostartAdd() {
     QFile file(autostartFile);
     if (file.open(QIODevice::WriteOnly)) {
         QTextStream stream(&file);
-        stream << "[Desktop Entry]" << Qt::endl;
-        stream << "Name=QText" << Qt::endl;
-        stream << "Exec=" << execLine << Qt::endl;
-        stream << "Terminal=false" << Qt::endl;
-        stream << "Type=Application" << Qt::endl;
-        stream << "StartupNotify=false" << Qt::endl;
-        stream << "X-GNOME-Autostart-enabled=true" << Qt::endl;
+        stream << "[Desktop Entry]" << endl;
+        stream << "Name=QText" << endl;
+        stream << "Exec=" << execLine << endl;
+        stream << "Terminal=false" << endl;
+        stream << "Type=Application" << endl;
+        stream << "StartupNotify=false" << endl;
+        stream << "X-GNOME-Autostart-enabled=true" << endl;
     }
 }
 

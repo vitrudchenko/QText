@@ -94,6 +94,11 @@ void State::load(QString objectName, QWidget* widget) {
 
         int newX = parent->x() + (parent->width() - widget->width()) / 2;
         int newY = parent->y() + (parent->height() - widget->height()) / 2 + QApplication::startDragDistance() * 2; //frame geometry doesn't really work on X11 so drag distance is workaround
+/*#ifdef Q_OS_WIN
+        int newY = parent->y() + (parent->height() - widget->height()) / 2;
+#else
+        int newY = parent->y() + (parent->height() - widget->height()) / 2 + QApplication::startDragDistance() * 2;
+#endif*/
         int newW = widget->width();
         int newH = widget->height();
         if (newX < minX) { newX = minX; }

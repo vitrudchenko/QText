@@ -57,21 +57,24 @@ int FolderItem::pathIndex() const {
     return _pathIndex;
 }
 
-QString FolderItem::title()  const {
+QString FolderItem::title() const {
     if (_directoryName == nullptr) {
-        QFileInfo path = _directoryPath;
+        QFileInfo path(_directoryPath);  // Pass QString explicitly
         QString dirName = path.fileName();
         int iParStart = dirName.indexOf('(');
         int iParEnd = dirName.lastIndexOf(')');
         if ((iParStart >= 0) && (iParEnd > iParStart)) {
-            return dirName.mid(iParStart, iParEnd - iParStart + 1); //use name in parentheses if one exists
-        } else {
+            return dirName.mid(iParStart, iParEnd - iParStart + 1);
+        }
+        else {
             return (_pathIndex == 0) ? "(Default)" : "(Default " + QString::number(_pathIndex + 1) + ")";
         }
-    } else {
+    }
+    else {
         return Helpers::getFolderTitleFromName(_directoryName);
     }
 }
+
 
 bool FolderItem::rename(QString newTitle) {
     StorageMonitorLocker lockMonitor(_storage->monitor());

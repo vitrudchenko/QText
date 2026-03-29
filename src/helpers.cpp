@@ -8,6 +8,7 @@
 #include <QStyleFactory>
 #include <QUrl>
 #include "helpers.h"
+#include <QStandardPaths>
 #include "icons.h"
 
 /*!
@@ -71,7 +72,7 @@ QString Helpers::getFSNameFromTitle(QString fsTitle, bool isFolder) {
     for (QChar ch : fsTitle) {
         if (!isValidTitleChar(ch)) {
             name.append("~");
-            name.append(QString("%1").arg(ch.unicode(), 2, 16, QChar('0')));
+            name.append(QString::asprintf("%02X", static_cast<uint>(ch.unicode())));
             name.append("~");
         } else {
             name.append(ch);
@@ -82,14 +83,15 @@ QString Helpers::getFSNameFromTitle(QString fsTitle, bool isFolder) {
     if (isFolder && ((lastChar == '.') || (lastChar == ' '))) {
         name.remove(name.length() - 1, 1);
         name.append("~");
-        name.append(QString("%1").arg(lastChar.unicode(), 2, 16, QChar('0')));
+        name.append(QString::asprintf("%02X", static_cast<uint>(lastChar.unicode())));
+
         name.append("~");
     }
 
     QChar firstChar = (name.length() > 0) ? name.at(0) : '\0';
     if (firstChar == ' ') {
         name.remove(0, 1);
-        name.insert(0, "~" + QString("%1").arg(firstChar.unicode(), 2, 16, QChar('0')) + "~");
+        name.insert(0, "~" + QString::asprintf("%02X", static_cast<uint>(firstChar.unicode())) + "~");
     }
 
     return name;
@@ -342,9 +344,9 @@ void Helpers::setReadonlyPalette(QWidget* widget) {
 void Helpers::setupResizableDialog(QWidget* dialog) {
     dialog->setWindowIcon(Icons::appMono());
 
-    QDialogButtonBox* child = dialog->findChild<QDialogButtonBox*>();
-    if (child != nullptr) {
-        for (QAbstractButton* button : child->buttons()) {
+    QDialogButtonBox* buttonBox = dialog->findChild<QDialogButtonBox*>();
+    if (buttonBox != nullptr) {
+        for (QAbstractButton* button : buttonBox->buttons()) {
             button->setIcon(QIcon());
         }
     }

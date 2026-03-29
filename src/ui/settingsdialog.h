@@ -22,13 +22,14 @@ class SettingsDialog : public QDialog {
         bool changedForceDarkMode() const { return _changedForceDarkMode; }
         bool changedForcePlainCopyPaste() const { return _changedForcePlainCopyPaste; }
         bool changedHotkey() const { return _changedHotkey; }
-        bool changedHotkeyUseDConf() const { return _changedHotkeyUseDConf; }
         bool changedHotkeyTogglesVisibility() const { return _changedHotkeyTogglesVisibility; }
         bool changedMinimizeToTray() const { return _changedMinimizeToTray; }
         bool changedShowInTaskbar() const { return _changedShowInTaskbar; }
         bool changedShowMarkdown() const { return _changedShowMarkdown; }
         bool changedTabTextColorPerType() const { return _changedTabTextColorPerType; }
         bool changedUseHtmlByDefault() const { return _changedUseHtmlByDefault; }
+        bool changedShowToolbar() const { return _changedShowToolbar; }
+        bool changedShowCloseButtonOnTabs() const { return _changedShowCloseButtonOnTabs; }
 
     protected:
         void keyPressEvent(QKeyEvent* event);
@@ -47,13 +48,14 @@ class SettingsDialog : public QDialog {
         bool _changedForceDarkMode;
         bool _changedForcePlainCopyPaste;
         bool _changedHotkey;
-        bool _changedHotkeyUseDConf;
         bool _changedHotkeyTogglesVisibility;
         bool _changedMinimizeToTray;
         bool _changedShowInTaskbar;
         bool _changedShowMarkdown;
         bool _changedTabTextColorPerType;
         bool _changedUseHtmlByDefault;
+        bool _changedShowToolbar;
+        bool _changedShowCloseButtonOnTabs;
         bool _oldAlwaysOnTop;
         bool _oldAutostart;
         QString _oldDataPath;
@@ -64,13 +66,14 @@ class SettingsDialog : public QDialog {
         bool _oldForceDarkMode;
         bool _oldForcePlainCopyPaste;
         QKeySequence _oldHotkey;
-        bool _oldHotkeyUseDConf;
         bool _oldHotkeyTogglesVisibility;
         bool _oldMinimizeToTray;
         bool _oldShowInTaskbar;
         bool _oldShowMarkdown;
         bool _oldTabTextColorPerType;
         bool _oldUseHtmlByDefault;
+        bool _oldShowToolbar;
+        bool _oldShowCloseButtonOnTabs;
 
     private slots:
         void onButtonClicked(QAbstractButton* button);

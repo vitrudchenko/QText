@@ -1,6 +1,7 @@
 #include <QCoreApplication>
 #include <QCheckBox>
-#include <QDesktopWidget>
+#include <QGuiApplication>
+#include <QScreen>
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QLabel>
@@ -23,9 +24,14 @@
 QString Feedback::_errorMessage;
 
 bool Feedback::showDialog(QWidget* parent, QUrl url) {
-    QRect geometry = (parent != nullptr)
-                     ? QDesktopWidget().availableGeometry(parent)
-                     : QGuiApplication::primaryScreen()->availableGeometry();
+    QRect geometry;
+    if (parent != nullptr) {
+        geometry = parent->screen()->availableGeometry();
+    }
+    else {
+        geometry = QGuiApplication::primaryScreen()->availableGeometry();
+    }
+
     int dialogWidth = geometry.width() / 4;
     if (dialogWidth < 480) { dialogWidth = 480; }
 

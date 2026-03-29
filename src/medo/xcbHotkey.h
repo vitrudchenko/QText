@@ -4,14 +4,15 @@
 // 2019-10-04: Reorganizing includes to minimize conflicts
 // 2019-09-16: Allowing Meta/Win key as a hotkey modifier
 // 2019-07-05: Initial version
+#ifdef Q_OS_LINUX
 
 #pragma once
 #include <QAbstractNativeEventFilter>
 #include <QByteArray>
 #include <QObject>
 #include <QKeySequence>
-
 namespace Medo { class Medo; }
+
 
 class XcbHotkey : public QObject, QAbstractNativeEventFilter {
         Q_OBJECT
@@ -59,3 +60,4 @@ class XcbHotkey : public QObject, QAbstractNativeEventFilter {
         uint8_t _hotkeyKey; //actually xcb_keycode_t; just 64-bit integer here to avoid include of X11 headers
 
 };
+#endif

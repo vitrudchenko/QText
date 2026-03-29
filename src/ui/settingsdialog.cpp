@@ -17,13 +17,7 @@ SettingsDialog::SettingsDialog(QWidget* parent, Hotkey* hotkey) : QDialog(parent
     Helpers::setReadonlyPalette(ui->editFontSize);
     Helpers::setReadonlyPalette(ui->editHotkey);
 
-    if (hotkey != nullptr) {
-        ui->editHotkey->setHotkey(hotkey, Settings::hotkey());
-    } else {
-        ui->editHotkey->setHotkey(hotkey, Settings::defaultHotkey());
-        ui->editHotkey->setEnabled(false);
-        ui->checkboxHotkeyUseDConf->setVisible(false);
-    }
+    ui->editHotkey->setHotkey(hotkey, Settings::hotkey());
 
     _oldAlwaysOnTop = Settings::alwaysOnTop();
     _oldAutostart = Setup::autostart();
@@ -38,6 +32,8 @@ SettingsDialog::SettingsDialog(QWidget* parent, Hotkey* hotkey) : QDialog(parent
     _oldHotkeyTogglesVisibility = Settings::hotkeyTogglesVisibility();
     _oldMinimizeToTray = Settings::minimizeToTray();
     _oldShowInTaskbar = Settings::showInTaskbar();
+    _oldShowToolbar = Settings::showToolbar();
+    _oldShowCloseButtonOnTabs = Settings::showCloseButtonOnTabs();
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
     _oldShowMarkdown = Settings::showMarkdown();
 #else
@@ -105,6 +101,8 @@ void SettingsDialog::reset() {
     ui->checkboxShowMarkdown->setChecked(_oldShowMarkdown);
     ui->checkboxTabTextColorPerType->setChecked(_oldTabTextColorPerType);
     ui->checkboxUseHtmlByDefault->setChecked(_oldUseHtmlByDefault);
+    ui->checkboxShowToolbar->setChecked(_oldShowToolbar);
+    ui->checkboxShowCloseButtonOnTabs->setChecked(_oldShowCloseButtonOnTabs);
 }
 
 void SettingsDialog::restoreDefaults() {
@@ -126,6 +124,8 @@ void SettingsDialog::restoreDefaults() {
 #endif
     ui->checkboxTabTextColorPerType->setChecked(Settings::defaultTabTextColorPerType());
     ui->checkboxUseHtmlByDefault->setChecked(Settings::defaultFileType() == FileType::Html);
+    ui->checkboxShowToolbar->setChecked(Settings::defaultShowToolbar());
+    ui->checkboxShowCloseButtonOnTabs->setChecked(Settings::defaultShowCloseButtonOnTabs());
 }
 
 void SettingsDialog::accept() {
@@ -161,6 +161,14 @@ void SettingsDialog::accept() {
     bool newForceDarkMode = (ui->checkboxForceDarkMode->checkState() == Qt::Checked);
     _changedForceDarkMode = newForceDarkMode != _oldForceDarkMode;
     if (_changedForceDarkMode) { Settings::setForceDarkMode(newForceDarkMode); }
+
+    bool newShowToolbar = (ui->checkboxShowToolbar->checkState() == Qt::Checked);
+    _changedShowToolbar = newShowToolbar != _oldShowToolbar;
+    if (_changedShowToolbar) { Settings::setShowToolbar(newShowToolbar); }
+
+    bool newShowCloseButtonOnTabs = (ui->checkboxShowCloseButtonOnTabs->checkState() == Qt::Checked);
+    _changedShowCloseButtonOnTabs = newShowCloseButtonOnTabs != _oldShowCloseButtonOnTabs;
+    if (_changedShowCloseButtonOnTabs) { Settings::setShowCloseButtonOnTabs(newShowCloseButtonOnTabs); }
 
     bool newForcePlainCopyPaste = (ui->checkboxForcePlainCopyPaste->checkState() == Qt::Checked);
     _changedForcePlainCopyPaste = newForcePlainCopyPaste != _oldForcePlainCopyPaste;

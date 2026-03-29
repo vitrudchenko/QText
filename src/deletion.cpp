@@ -1,9 +1,14 @@
-#include <QDebug>
+﻿#include <QDebug>
 #include <QDir>
 #include <QFile>
 #include <QRandomGenerator>
 #include <QStandardPaths>
+#include <vector>
+#include <cstring>
 #include "deletion.h"
+#include <windows.h> 
+#include <shellapi.h>
+
 
 #if defined(Q_OS_WIN)
     #include <windows.h>
@@ -20,20 +25,36 @@ bool Deletion::deleteFile(FileItem* file) {
 
 bool Deletion::overwriteFile(FileItem* file) {
     QFile osFile(file->path());
-    int length = osFile.size();
-    osFile.open(QIODevice::WriteOnly | QIODevice::Unbuffered);
-    int size = ((length + 4095) / 4096) * 4096; //round size up to the nearest 4K
-    char buffer[size];
-    QRandomGenerator rnd;
-    for (auto i = 0; i < static_cast<int>(sizeof(buffer)); i += 4) {
-        qint32 n = rnd.generate();
-        memcpy(&buffer[i], &n, 4);
+    if (!osFile.open(QIODevice::WriteOnly | QIODevice::Unbuffered))
+        return false;
+
+    qint64 length = osFile.size();
+    if (length <= 0) {
+        osFile.close();
+        return osFile.remove();
     }
+
+    // Round up to 4K boundary
+    int size = ((length + 4095) / 4096) * 4096;
+
+    // VLA → std::vector (compile-time safe)
+    std::vector<char> buffer(size, '\0');
+    QRandomGenerator rnd;
+
+    for (int i = 0; i < size; i += 4) {
+        qint32 n = rnd.generate();
+        if (i + 3 < size)  // Safe bounds
+            memcpy(&buffer[i], &n, 4);
+    }
+
     osFile.seek(0);
-    osFile.write(buffer, length);
+    qint64 written = osFile.write(buffer.data(), length);
     osFile.flush();
-    return osFile.remove();
+    osFile.close();
+
+    return written == length && osFile.remove();
 }
+
 
 bool Deletion::recycleFile(FileItem* file) {
     QString path = file->path();
@@ -51,7 +72,7 @@ bool Deletion::recycleFile(FileItem* file) {
         fileOp.wFunc = FO_DELETE;
         fileOp.pFrom =  fromPathArray;
         fileOp.fFlags = FOF_NO_UI | FOF_ALLOWUNDO;
-        if (SHFileOperation(&fileOp) == 0) {
+        if (SHFileOperationW(&fileOp) == 0) {
             return true;
         } else { //just delete if recycle fails
             qDebug().noquote() << "[Deletion] Recycle failed for '" << osFile.fileName() << "'";

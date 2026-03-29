@@ -67,7 +67,8 @@ void WinHotkey::resume() {
 std::atomic<uint64_t> WinHotkey::_globalHotkeyCounter(0);
 
 void WinHotkey::nativeInit() {
-    _hotkeyId = reinterpret_cast<WPARAM>(_globalHotkeyCounter++);
+    //_hotkeyId = reinterpret_cast<WPARAM>(_globalHotkeyCounter++);
+    _hotkeyId = static_cast<WPARAM>(static_cast<uintptr_t>(_globalHotkeyCounter++));
 }
 
 bool WinHotkey::nativeRegisterHotkey(Qt::Key key, Qt::KeyboardModifiers modifiers) {
@@ -105,15 +106,16 @@ bool WinHotkey::nativeUnregisterHotkey() {
 }
 
 
-bool WinHotkey::nativeEventFilter(const QByteArray&, void* message, long*) {
+bool WinHotkey::nativeEventFilter(const QByteArray& eventType, void* message, qintptr* result) {
     MSG* msg = static_cast<MSG*>(message);
     if (msg->message == WM_HOTKEY) {
-        if (msg->wParam == static_cast<WPARAM>(_hotkeyId)) {
-            if (suspensionLevel <= 0) {
+        if (msg->wParam == _hotkeyId) {  // Fixed cast
+            if (this->suspensionLevel <= 0) {  // Fixed access
                 qDebug().noquote() << "[WinHotkey]" << "Hotkey" << _key.toString(QKeySequence::PortableText) << "detected";
                 emit activated();
                 return true;
-            } else {
+            }
+            else {
                 qDebug().noquote() << "[WinHotkey]" << "Hotkey" << _key.toString(QKeySequence::PortableText) << "ignored";
                 return false;
             }
@@ -121,3 +123,4 @@ bool WinHotkey::nativeEventFilter(const QByteArray&, void* message, long*) {
     }
     return false;
 }
+
