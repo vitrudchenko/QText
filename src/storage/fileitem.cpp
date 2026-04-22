@@ -148,6 +148,12 @@ bool FileItem::isEmpty() const {
 }
 
 
+static QByteArray fileHash(const QString& path) {
+    QFile f(path);
+    if (!f.open(QIODevice::ReadOnly)) { return QByteArray(); }
+    return QCryptographicHash::hash(f.readAll(), QCryptographicHash::Md5);
+}
+
 bool FileItem::load() {
     qDebug() << "load()" << path();
 
@@ -218,9 +224,12 @@ bool FileItem::load() {
     if (fileValid) {
         QFileInfo info(file);
         _modificationTime = info.lastModified(); //store so that file change can be detected
+        _lastSavedHash = fileHash(path()); // remember disk state so hash-check in focusInEvent stays valid
     } else {
         _modificationTime = QDateTime::currentDateTimeUtc();
+        _lastSavedHash = QByteArray();
     }
+    _isDirty = false;
     return fileValid;
 }
 
@@ -255,6 +264,8 @@ bool FileItem::save() const {
         this->document()->setModified(false);
         QFileInfo info(file);
         _modificationTime = info.lastModified(); //remember modification time to avoid reload
+        _lastSavedHash = fileHash(path()); // hash of actual bytes on disk (may include BOM from QTextStream)
+        _isDirty = false;
         return true;
     } else {
         qDebug() << "save()" << path() << "error:" << file.errorString();
@@ -536,13 +547,81 @@ void FileItem::focusInEvent(QFocusEvent* e) {
     QFile file(path());
     if (file.exists()) {
         QFileInfo info(file);
-        if (_modificationTime != info.lastModified()) { load(); }
+        bool doCheckUndoInterval = true;
+        bool fileChangedExternally = (_modificationTime != info.lastModified());
 
-        int clearUndoInterval = Settings::clearUndoInterval();
-        if ((clearUndoInterval > 0) && (this->document()->isUndoAvailable() || this->document()->isRedoAvailable())) {
-            qint64 intervalSinceLastModification = info.lastModified().secsTo(QDateTime::currentDateTime());
-            if (intervalSinceLastModification > clearUndoInterval) {
-                this->document()->clearUndoRedoStacks();
+        // Verify using hash in two cases:
+        // 1. Timestamps match but content differs — Nextcloud race condition inside save()
+        // 2. Timestamps differ but content matches — Nextcloud synced back what we wrote,
+        //    or re-uploaded an identical version; reload would be needless (or harmful if
+        //    it's an older server version with same content as ours).
+        // Hash is computed only when we have a reference (_lastSavedHash not empty).
+        if (!_lastSavedHash.isEmpty()) {
+            QByteArray diskHash = fileHash(path());
+            if (!diskHash.isEmpty()) {
+                if (!fileChangedExternally && diskHash != _lastSavedHash) {
+                    // Same mtime, different content — race condition in save()
+                    qDebug().nospace() << "focusInEvent(): hash mismatch despite same mtime (race condition) " << path();
+                    fileChangedExternally = true;
+                } else if (fileChangedExternally && diskHash == _lastSavedHash) {
+                    // Different mtime, same content — Nextcloud touched the file but content is ours
+                    qDebug().nospace() << "focusInEvent(): mtime differs but content matches our save — skipping reload " << path();
+                    _modificationTime = info.lastModified(); // update so we don't re-check next time
+                    fileChangedExternally = false;
+                }
+            }
+        }
+        if (fileChangedExternally) {
+            if (_isDirty) {
+                // Buffer has unsaved user changes — do not overwrite them.
+                // Also skip clearUndoInterval: mtime belongs to external file, not ours.
+                qDebug().nospace() << "focusInEvent(): external change deferred (buffer is dirty) " << path();
+                doCheckUndoInterval = false;
+            } else {
+                // Buffer is clean (just saved). Before reloading, check whether the file on
+                // disk is actually older than our buffer — Nextcloud can write a previous
+                // server version after our save() completes (race condition on their side).
+                // If the disk text is a prefix of our buffer text, our buffer is strictly
+                // newer: skip the reload and keep our content.
+                bool skipReload = false;
+                {
+                    QFile diskFile(path());
+                    if (diskFile.open(QIODevice::ReadOnly)) {
+                        QTextStream s(&diskFile);
+                        s.setEncoding(QStringConverter::Utf8);
+                        s.setAutoDetectUnicode(true);
+                        QString diskText = s.readAll();
+                        diskFile.close();
+                        QString bufferText = this->document()->toPlainText();
+                        if (!diskText.isEmpty() && bufferText.startsWith(diskText)) {
+                            // Disk has an older version — our buffer contains everything on
+                            // disk plus more. Keep our buffer and update stored mtime so we
+                            // don't trigger this check again until the next real change.
+                            qDebug().nospace() << "focusInEvent(): disk is prefix of buffer (Nextcloud older version) — keeping buffer " << path();
+                            _modificationTime = info.lastModified();
+                            _lastSavedHash = fileHash(path());
+                            // Mark document modified so focusOut will re-save our buffer,
+                            // overwriting the older Nextcloud version on disk.
+                            this->document()->setModified(true);
+                            _isDirty = true;
+                            skipReload = true;
+                        }
+                    }
+                }
+                if (!skipReload) {
+                    load();
+                    info.refresh(); // update after load() so clearUndoInterval uses current mtime
+                } // if (!skipReload)
+            }
+        }
+
+        if (doCheckUndoInterval) {
+            int clearUndoInterval = Settings::clearUndoInterval();
+            if ((clearUndoInterval > 0) && (this->document()->isUndoAvailable() || this->document()->isRedoAvailable())) {
+                qint64 intervalSinceLastModification = info.lastModified().secsTo(QDateTime::currentDateTime());
+                if (intervalSinceLastModification > clearUndoInterval) {
+                    this->document()->clearUndoRedoStacks();
+                }
             }
         }
     } else {
@@ -661,6 +740,8 @@ void FileItem::printPreview(QPrinter* printer) {
 
 void FileItem::onModificationChanged(bool changed) {
     qDebug().nospace() << "onModificationChanged(" << changed << ")" << path();
+
+    if (changed) { _isDirty = true; }
 
     emit modificationChanged(this, changed);
 

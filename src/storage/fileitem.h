@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QByteArray>
+#include <QCryptographicHash>
 #include <QDateTime>
 #include <QFocusEvent>
 #include <QPrinter>
@@ -79,6 +81,8 @@ class FileItem : public QTextEdit {
         QStringEncoder _utf8Encoder = QStringEncoder(QStringEncoder::Utf8);
         QTimer* _timerSavePending = nullptr;
         mutable QDateTime _modificationTime;
+        mutable bool _isDirty = false;           // true when buffer has unsaved user changes (mutable: modified in save() const)
+        mutable QByteArray _lastSavedHash;        // MD5 of last content written by us (mutable: modified in save() const)
         int zoomAmount = 0;
         bool customCursorSet = false;
 
